@@ -1,0 +1,106 @@
+:root {
+  --bg: #17110b;
+  --bg-deep: #120d09;
+  --panel: rgba(34, 24, 15, 0.78);
+  --panel-soft: rgba(45, 32, 20, 0.62);
+  --text: #eadcc2;
+  --muted: #bba47d;
+  --line: rgba(216, 182, 119, 0.24);
+  --line-strong: rgba(216, 182, 119, 0.42);
+  --accent: #c8923d;
+  --accent-soft: rgba(200, 146, 61, 0.16);
+  --shadow: rgba(0, 0, 0, 0.34);
+  --max: 1160px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: Baskerville, "Libre Baskerville", "Times New Roman", serif;
+  background:
+    radial-gradient(circle at top left, rgba(194, 143, 67, 0.10), transparent 32%),
+    radial-gradient(circle at 85% 15%, rgba(130, 87, 31, 0.16), transparent 26%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), transparent 22%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.012) 0, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 72px),
+    linear-gradient(180deg, #24180e 0%, #17110b 42%, #120d09 100%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s ease, color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.shell {
+  width: min(var(--max), calc(100% - 48px));
+  margin: 0 auto;
+  padding: 34px 0 60px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 68px);
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 40px var(--shadow);
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.005));
+}
+
+.sidebar {
+  padding: 42px 28px;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0));
+}
+
+.brand-mark {
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.brand p {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 18ch;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sidebar nav a {
+  opacity: 0.72;
+  position: relative;
+  width: fit-content;
+  font-size: 17px;
+}
+
+.sidebar nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+}

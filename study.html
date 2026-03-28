@@ -4,17 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Study · Dao De Zion</title>
-  <style>
-    :root { --bg:#17110b; --panel:rgba(34,24,15,.78); --text:#eadcc2; --muted:#bba47d; --line:rgba(216,182,119,.26); --accent:#c8923d; --shadow:rgba(0,0,0,.34); --max:1160px; }
-    *{box-sizing:border-box} body{margin:0;color:var(--text);font-family:Baskerville,"Libre Baskerville","Times New Roman",serif;background:radial-gradient(circle at top left, rgba(194,143,67,.10), transparent 32%),radial-gradient(circle at 85% 15%, rgba(130,87,31,.16), transparent 26%),linear-gradient(180deg, rgba(255,255,255,.02), transparent 22%),repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0, rgba(255,255,255,.012) 1px, transparent 1px, transparent 72px),linear-gradient(180deg, #24180e 0%, #17110b 42%, #120d09 100%)}
-    a{color:inherit;text-decoration:none}.shell{width:min(var(--max),calc(100% - 48px));margin:0 auto;padding:34px 0 60px}.layout{display:grid;grid-template-columns:240px 1fr;border:1px solid var(--line);box-shadow:0 12px 40px var(--shadow)}
-    .sidebar{padding:42px 28px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:18px}.brand-mark{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:10px}.brand h1{margin:0;font-size:22px;font-weight:500}.brand p{margin:10px 0 0;font-size:14px;line-height:1.55;color:var(--muted);max-width:18ch}
-    .sidebar nav{display:flex;flex-direction:column;gap:14px}.sidebar nav a{opacity:.72;position:relative;width:fit-content;font-size:17px}.sidebar nav a::after{content:"";position:absolute;left:0;bottom:-5px;width:0;height:1px;background:var(--accent);transition:width .22s ease}.sidebar nav a:hover,.sidebar nav a.active{opacity:1;color:#f2e6d0}.sidebar nav a:hover::after,.sidebar nav a.active::after{width:100%}
-    .sidebar-footer{margin-top:auto;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;line-height:1.6}.content{padding:44px 58px 50px;max-width:840px}.eyebrow{margin:0 0 14px;color:var(--muted);font-size:13px;letter-spacing:.22em;text-transform:uppercase}
-    h2{margin:0;font-size:clamp(2.2rem,4vw,3.9rem);font-weight:500;line-height:1.05}h2::after{content:"";display:block;width:100%;border-bottom:1px solid var(--accent);margin-top:16px;margin-bottom:22px}p,li{font-size:18px;line-height:1.72}.lead{color:#dbc9ac;max-width:40rem}
-    .panel{background:var(--panel);border:1px solid var(--line);padding:22px;margin-top:28px}.study-list{list-style:none;padding:0;margin:0}.study-list li{padding:14px 0;border-bottom:1px solid var(--line)}.study-list li:last-child{border-bottom:none}.study-list strong{display:block;font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:#f1e3c7;margin-bottom:4px}
-    @media (max-width:980px){.layout{grid-template-columns:1fr}.sidebar{border-right:none;border-bottom:1px solid var(--line)}.content{padding:34px 24px 42px}}
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="shell">
@@ -35,10 +25,23 @@
         </nav>
         <div class="sidebar-footer">Quiet inquiry.<br>Serious reading.<br>Enduring ideas.</div>
       </aside>
+
       <main class="content">
+        <div class="crest">
+          <div class="crest-top">
+            <div class="crest-mark">學</div>
+            <div class="crest-text">
+              <strong>Study program</strong>
+              <span>A disciplined form for shared reading, dialogue, and synthesis.</span>
+            </div>
+          </div>
+          <div class="crest-rule"></div>
+        </div>
+
         <p class="eyebrow">Study group</p>
         <h2>A simple format for shared inquiry</h2>
         <p class="lead">The study program should be disciplined without becoming rigid: clear enough to guide a circle, open enough to allow revelation, insight, and disagreement.</p>
+
         <div class="panel">
           <ul class="study-list">
             <li><strong>Opening</strong>5 minutes of silence and a short statement of intention.</li>
@@ -47,6 +50,25 @@
             <li><strong>Synthesis</strong>Ask how the passage reshapes perception, conduct, or community.</li>
             <li><strong>Close</strong>Name the next reading and one practical question to carry forward.</li>
           </ul>
+        </div>
+
+        <div class="panel-grid dual-grid">
+          <article class="panel">
+            <span class="mini-label">First content page</span>
+            <h3>Cycle 001</h3>
+            <p>An inaugural four-session reading sequence built around the Dao chamber.</p>
+            <div class="button-row">
+              <a class="button" href="study-cycle-001.html">Open cycle 001</a>
+            </div>
+          </article>
+          <article class="panel">
+            <span class="mini-label">First content page</span>
+            <h3>Guidelines</h3>
+            <p>A concise rule of order for how Dao De Zion study should proceed.</p>
+            <div class="button-row">
+              <a class="button" href="study-guidelines.html">Open guidelines</a>
+            </div>
+          </article>
         </div>
       </main>
     </div>
