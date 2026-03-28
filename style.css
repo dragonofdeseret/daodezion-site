@@ -414,5 +414,65 @@ p {
   .lead {
     font-size: 1.04rem;
     line-height: 1.72;
+ 
+ }
+.shelf-panel h3 {
+  margin-bottom: 18px;
+}
+
+.shelf-section {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(216, 182, 119, 0.12);
+}
+
+.shelf-section:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.shelf-heading {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #f1e2c6;
+  text-transform: uppercase;
+}
+
+.library-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 2px;
+}
+
+.library-list li {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 20px;
+  color: #eadcc2;
+  line-height: 1.75;
+}
+
+.library-list li + li {
+  margin-top: 4px;
+}
+
+.library-list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--muted);
+  font-size: 1.1em;
+}
+
+@media (max-width: 1080px) {
+  .shelf-panel {
+    height: auto;
   }
 }
+
+}
+
