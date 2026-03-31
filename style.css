@@ -72,6 +72,11 @@ a {
   background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0));
 }
 
+.sidebar-external {
+  margin-top: 8px;
+  opacity: 0.9;
+}
+
 .brand-mark {
   font-size: 13px;
   letter-spacing: 0.22em;
