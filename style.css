@@ -150,6 +150,19 @@ a:hover { color: var(--accent); }
 .nav-drop-menu a.active {
   color: var(--accent);
 }
+
+/* default: dropdown disabled */
+.nav-item.dropdown .dropdown-menu {
+  display: none;
+  pointer-events: none;
+}
+
+/* only enable when inside library section */
+body.library-active .nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+  pointer-events: auto;
+}
+
 .page { padding: 4.15rem 0 4.85rem; }
 .hero { max-width: 860px; margin-bottom: 2.55rem; }
 .hero.compact { margin-bottom: 2rem; }
