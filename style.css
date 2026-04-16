@@ -140,10 +140,6 @@ a:hover { color: var(--accent); }
   border-radius: 14px;
   box-shadow: 0 18px 40px rgba(25, 17, 13, 0.12);
 }
-.nav-dropdown:hover .nav-drop-menu,
-.nav-dropdown:focus-within .nav-drop-menu {
-  display: flex;
-}
 .nav-drop-menu a {
   width: fit-content;
 }
@@ -151,16 +147,26 @@ a:hover { color: var(--accent); }
   color: var(--accent);
 }
 
-/* default: dropdown disabled */
-.nav-item.dropdown .dropdown-menu {
+/* hidden by default everywhere */
+.nav-drop-menu {
+  position: absolute;
+  top: calc(100% + 0.15rem);
+  left: -0.95rem;
+  min-width: 220px;
+  padding: 0.7rem 0.85rem;
   display: none;
-  pointer-events: none;
+  flex-direction: column;
+  gap: 0.65rem;
+  background: linear-gradient(180deg, rgba(252,246,237,0.98), rgba(245,232,216,0.98));
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(25, 17, 13, 0.12);
 }
 
-/* only enable when inside library section */
-body.library-active .nav-item.dropdown:hover .dropdown-menu {
-  display: block;
-  pointer-events: auto;
+/* only active inside the library section */
+body.library-active .nav-dropdown:hover .nav-drop-menu,
+body.library-active .nav-dropdown:focus-within .nav-drop-menu {
+  display: flex;
 }
 
 .page { padding: 4.15rem 0 4.85rem; }
@@ -398,15 +404,22 @@ h3 { font-size: 1.08rem; margin-bottom: 0.7rem; }
   .home-grid, .triad-grid, .reading-columns, .split-section, .archive-entry { grid-template-columns: 1fr; }
   .archive-meta { border-right: 0; padding-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 0.5rem; }
 }
+
 @media (max-width: 760px) {
-  .menu-toggle { display: inline-flex; }
-  .site-nav {
+  .nav-drop-menu {
+    position: static;
     display: none;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.85rem;
-    padding: 0 0 1rem;
+    min-width: 0;
+    width: 100%;
+    margin-top: 0.55rem;
+    padding: 0.8rem 0.9rem;
+    box-shadow: none;
   }
+
+  body.library-active .nav-drop-menu {
+    display: flex;
+  }
+}
   .site-nav.open { display: flex; }
   .nav-dropdown { width: 100%; padding-bottom: 0; margin-bottom: 0; }
   .nav-dropdown::before { display: none; }
