@@ -29,3 +29,15 @@ bookLinks.forEach((link) => {
     }
   });
 });
+
+
+const dropdownToggles = document.querySelectorAll('.nav-drop-toggle');
+
+dropdownToggles.forEach((toggle) => {
+  toggle.addEventListener('click', () => {
+    const dropdown = toggle.closest('.nav-dropdown');
+    if (!dropdown) return;
+    const isOpen = dropdown.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+});
