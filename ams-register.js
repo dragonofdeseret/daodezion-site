@@ -29,7 +29,7 @@
 const RSVP_SHEET = {
   enabled: true,
   csvUrl:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTm96x68x-OmnTcric2Pyt4b6zWOhR7n9-9_fEA5XSGMSIhJwFJ2Ed4CbFGugG3WjlgDKQY2W-NTIdU/pub?gid=0&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/1mqbIJ7kXNgDGiqV5LjddJDlBjavhjd_gCRXzZofjPdU/edit?usp=sharing",
 
   columns: {
     eventKey: "eventKey",
