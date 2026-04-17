@@ -9,7 +9,6 @@ if (menuToggle && nav) {
 }
 
 const rsvpLinks = document.querySelectorAll('[data-rsvp]');
-
 rsvpLinks.forEach((link) => {
   link.addEventListener('click', (event) => {
     if (link.getAttribute('href') === '#') {
@@ -20,7 +19,6 @@ rsvpLinks.forEach((link) => {
 });
 
 const bookLinks = document.querySelectorAll('[data-book-link]');
-
 bookLinks.forEach((link) => {
   link.addEventListener('click', (event) => {
     if (link.getAttribute('href') === '#') {
@@ -29,4 +27,3 @@ bookLinks.forEach((link) => {
     }
   });
 });
-
