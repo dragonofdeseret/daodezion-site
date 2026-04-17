@@ -1,29 +1,24 @@
-const nav = document.querySelector('#site-nav');
 const menuToggle = document.querySelector('.menu-toggle');
+const siteNav = document.querySelector('#site-nav');
 
-if (menuToggle && nav) {
+if (menuToggle && siteNav) {
   menuToggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('open');
+    const isOpen = siteNav.classList.toggle('open');
     menuToggle.setAttribute('aria-expanded', String(isOpen));
   });
 }
 
-const rsvpLinks = document.querySelectorAll('[data-rsvp]');
-rsvpLinks.forEach((link) => {
-  link.addEventListener('click', (event) => {
-    if (link.getAttribute('href') === '#') {
-      event.preventDefault();
-      window.alert(link.dataset.rsvp);
-    }
-  });
-});
+const placeholderLinks = document.querySelectorAll('a[data-rsvp], .book-link[href="#"]');
 
-const bookLinks = document.querySelectorAll('[data-book-link]');
-bookLinks.forEach((link) => {
+placeholderLinks.forEach((link) => {
   link.addEventListener('click', (event) => {
     if (link.getAttribute('href') === '#') {
       event.preventDefault();
-      window.alert('Replace this placeholder with your preferred external edition or translation link.');
+      if (link.dataset.rsvp) {
+        window.alert(link.dataset.rsvp);
+      } else {
+        window.alert('Replace this placeholder # with the external link you want readers to use.');
+      }
     }
   });
 });
