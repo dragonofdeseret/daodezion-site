@@ -67,7 +67,7 @@ const AMS_DATA = {
       The prefilled form should already contain:
         eventKey = ams-2026-05-16
     */
-    rsvpUrl: "https://forms.gle/LEZujhPpPoTyq3Rn9",
+    rsvpUrl: "https://docs.google.com/forms/d/e/1FAIpQLScqq-wtybruOtKTV5Khf8jfltQhG_sukFfl8JNDfuBW-F02Ng/viewform?usp=pp_url&entry.1051735444=ams-2026-05-16",
   },
 
   registerStandard: {
