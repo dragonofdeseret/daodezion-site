@@ -449,38 +449,121 @@ h3 {
 
 .book-item:last-child { border-bottom: 0; }
 
+/* =========================================
+   BOOK LINKS — PRIMARY / SECONDARY / INK
+========================================= */
+
 .book-link {
-  color: #1a1411; /* slightly stronger than body */
   position: relative;
-  display: inline-block;
-  padding-bottom: 2px;
+  display: inline;
+  width: fit-content;
+  text-decoration: none;
+  transition: color 160ms ease, opacity 160ms ease;
 }
 
-/* ink-style underline (not default underline) */
+/* shared underline */
 .book-link::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
+  left: 0.04em;
+  bottom: -0.08em;
+  width: 96%;
   height: 1px;
-  background: rgba(80, 50, 30, 0.35);
-  transition: all 160ms ease; 
-  opacity: 0.8;
-  transform: scaleX(0.98);
+  transform: scaleX(0.985) rotate(-0.15deg);
+  transform-origin: left center;
+  opacity: 0.82;
+  transition:
+    background 160ms ease,
+    opacity 160ms ease,
+    transform 160ms ease;
 }
 
-.book-link:hover {
+/* ---------- PRIMARY TEXTS ---------- */
+.book-link-primary {
+  color: #18120f;
+  font-weight: 500;
+  letter-spacing: 0.002em;
+}
+
+.book-link-primary::after {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(46, 28, 20, 0.15) 0%,
+      rgba(46, 28, 20, 0.40) 12%,
+      rgba(46, 28, 20, 0.34) 48%,
+      rgba(46, 28, 20, 0.42) 78%,
+      rgba(46, 28, 20, 0.18) 100%
+    );
+  height: 1.15px;
+}
+
+.book-link-primary:hover {
   color: var(--red-bright);
 }
 
-.book-link:hover::after {
-  background: var(--red-bright);
+.book-link-primary:hover::after {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(122, 30, 23, 0.25) 0%,
+      rgba(165, 42, 31, 0.70) 20%,
+      rgba(165, 42, 31, 0.58) 58%,
+      rgba(165, 42, 31, 0.74) 82%,
+      rgba(122, 30, 23, 0.22) 100%
+    );
+  opacity: 1;
+  transform: scaleX(1) rotate(-0.22deg);
+}
+
+/* ---------- SECONDARY TEXTS ---------- */
+.book-link-secondary {
+  color: #3d3028;
+  font-weight: 400;
+  opacity: 0.94;
+}
+
+.book-link-secondary::after {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(80, 50, 30, 0.12) 0%,
+      rgba(80, 50, 30, 0.28) 16%,
+      rgba(80, 50, 30, 0.22) 50%,
+      rgba(80, 50, 30, 0.30) 82%,
+      rgba(80, 50, 30, 0.10) 100%
+    );
+  height: 1px;
+  opacity: 0.72;
+}
+
+.book-link-secondary:hover {
+  color: var(--red-bright);
+  opacity: 1;
+}
+
+.book-link-secondary:hover::after {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(122, 30, 23, 0.18) 0%,
+      rgba(165, 42, 31, 0.48) 18%,
+      rgba(165, 42, 31, 0.40) 55%,
+      rgba(165, 42, 31, 0.52) 82%,
+      rgba(122, 30, 23, 0.15) 100%
+    );
+  opacity: 0.95;
+  transform: scaleX(0.992) rotate(-0.1deg);
 }
 
 .book-note {
   color: var(--ink-soft);
   font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.reading-columns .card h2 {
+  margin-bottom: 1.2rem;
 }
 
 /* =========================================
