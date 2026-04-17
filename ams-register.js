@@ -4,21 +4,17 @@
   DURABLE ARCHITECTURE
   One reusable Google Form + one master Google Sheet + eventKey filtering
 
-  HOW IT WORKS
-  ------------
-  - You keep one Google Form for all future AMS events.
-  - Each event gets a unique eventKey, such as:
-      ams-2026-05-16
-  - The RSVP button uses a PREFILLED Google Form URL that already includes that eventKey.
-  - Google Forms writes all responses into one master sheet.
-  - This file fetches the published CSV and filters only rows whose eventKey matches
-    the current upcoming event's eventKey.
-  - The upcoming card then shows the live attendee count or names for that one event.
+  WHAT THIS VERSION ADDS
+  ----------------------
+  - capacity limit display for upcoming event
+  - RSVP closes automatically when:
+      1. event date has passed, or
+      2. capacity has been reached
+  - attendee count remains live for upcoming event
+  - archive remains manual/static for historical integrity
 
   REQUIRED GOOGLE FORM FIELDS
   ---------------------------
-  Your reusable form should include these exact question labels:
-
     eventKey
     Email
     Name
@@ -27,25 +23,7 @@
 
   REQUIRED SHEET HEADERS
   ----------------------
-  Your linked Google Sheet should therefore have headers like:
-
     Timestamp,eventKey,Email,Name,No. of attendees,Questions/Notes
-
-  IMPORTANT
-  ---------
-  The RSVP button should point to a PREFILLED FORM URL whose eventKey field is already filled.
-  That is what makes one reusable form work cleanly.
-
-  DISPLAY MODES
-  -------------
-    attendeeDisplayMode: "count" => "12 registered"
-    attendeeDisplayMode: "names" => "Alice, Ben, Clara"
-
-  ARCHIVE POLICY
-  --------------
-  - Upcoming event uses live RSVP data from the sheet.
-  - Archived records remain curated/manual by default.
-  - This keeps the archive stable and prevents historical entries from shifting if sheet data changes later.
 */
 
 const RSVP_SHEET = {
@@ -75,17 +53,21 @@ const AMS_DATA = {
     location: "Beech Residence / To be confirmed",
     format: "Open discussion",
     topic:
-      "How do we see the Sacred King?",
+      "What remains necessary in inherited religious order once one has discovered more organic modes of being?",
     reading: "Suggested Reading: Iron John by Robert Bly",
 
     /*
-      IMPORTANT:
+      Set capacity to a number to enable capacity display.
+      Set capacity to null to disable it.
+    */
+    capacity: null,
+
+    /*
       Replace this with the PREFILLED Google Form URL for THIS event.
       The prefilled form should already contain:
         eventKey = ams-2026-05-16
     */
-    rsvpUrl: "https://docs.google.com/forms/d/e/1FAIpQLScqq-wtybruOtKTV5Khf8jfltQhG_sukFfl8JNDfuBW-F02Ng/viewform?usp=pp_url&entry.1051735444=ams-2026-05-16",
-
+    rsvpUrl: "https://forms.gle/LEZujhPpPoTyq3Rn9",
   },
 
   registerStandard: {
@@ -101,10 +83,6 @@ const AMS_DATA = {
       "One reusable Google Form → one master Google Sheet → filtered by eventKey."
   },
 
-/* ====================
-        RECORDS
-====================== */
-
   records: [
     {
       date: "2026-03-28",
@@ -116,10 +94,6 @@ const AMS_DATA = {
     }
   ]
 };
-
-/* ====================
-        FUNCTIONS
-====================== */
 
 function escapeHtml(value) {
   return String(value)
@@ -316,6 +290,12 @@ function uniqueNames(names) {
   return result;
 }
 
+function isEventPast(dateStr) {
+  const now = new Date();
+  const eventDate = new Date(`${dateStr}T23:59:59`);
+  return now > eventDate;
+}
+
 async function fetchSheetRows() {
   if (!RSVP_SHEET.enabled || !RSVP_SHEET.csvUrl) {
     return [];
@@ -389,17 +369,79 @@ function formatUpcomingAttendeeDisplay(summary) {
   return `${summary.totalAttendees} registered`;
 }
 
+function getCapacityState(summary) {
+  const capacity = AMS_DATA.upcoming.capacity;
+
+  if (capacity == null || Number.isNaN(Number(capacity)) || Number(capacity) < 1) {
+    return {
+      enabled: false,
+      capacity: null,
+      total: summary.totalAttendees,
+      remaining: null,
+      isFull: false,
+      display: null
+    };
+  }
+
+  const safeCapacity = Number(capacity);
+  const total = summary.totalAttendees;
+  const remaining = Math.max(safeCapacity - total, 0);
+  const isFull = total >= safeCapacity;
+
+  let display = `${total} / ${safeCapacity} registered`;
+
+  if (isFull) {
+    display = `${safeCapacity} / ${safeCapacity} registered · Full`;
+  }
+
+  return {
+    enabled: true,
+    capacity: safeCapacity,
+    total,
+    remaining,
+    isFull,
+    display
+  };
+}
+
+function getSeatStatusText(capacityState) {
+  if (!capacityState.enabled) return null;
+  if (capacityState.isFull) return "Capacity reached.";
+
+  if (capacityState.remaining === 1) {
+    return "1 seat remaining.";
+  }
+
+  return `${capacityState.remaining} seats remaining.`;
+}
+
 function buildUpcomingCard(upcomingSummary) {
   const upcoming = AMS_DATA.upcoming;
   const upcomingEl = document.querySelector("[data-ams-upcoming]");
   if (!upcomingEl) return;
 
-  const hasRealRsvp = upcoming.rsvpUrl && upcoming.rsvpUrl !== "#";
-  const rsvpAttrs = hasRealRsvp
-    ? `href="${escapeHtml(upcoming.rsvpUrl)}" target="_blank" rel="noopener noreferrer"`
-    : `href="#" data-rsvp="${escapeHtml(upcoming.rsvpPlaceholder)}"`;
+  const past = isEventPast(upcoming.date);
+  const capacityState = getCapacityState(upcomingSummary);
+  const closedByCapacity = capacityState.isFull;
+  const closed = past || closedByCapacity;
 
-  const attendeeText = formatUpcomingAttendeeDisplay(upcomingSummary);
+  const attendeeText = capacityState.enabled
+    ? capacityState.display
+    : formatUpcomingAttendeeDisplay(upcomingSummary);
+
+  const seatStatusText = getSeatStatusText(capacityState);
+
+  const hasRealRsvp = upcoming.rsvpUrl && upcoming.rsvpUrl !== "#";
+  const rsvpAttrs = !closed && hasRealRsvp
+    ? `href="${escapeHtml(upcoming.rsvpUrl)}" target="_blank" rel="noopener noreferrer"`
+    : `href="#" aria-disabled="true" style="opacity:0.55;pointer-events:none;"`;
+
+  let statusText = "Open";
+  if (past) {
+    statusText = "Closed";
+  } else if (closedByCapacity) {
+    statusText = "Full";
+  }
 
   upcomingEl.innerHTML = `
     <article class="card event-card ink-card">
@@ -431,18 +473,34 @@ function buildUpcomingCard(upcomingSummary) {
           <dt>Attendees</dt>
           <dd>${escapeHtml(attendeeText)}</dd>
         </div>
+        ${
+          capacityState.enabled
+            ? `
         <div class="archive-ledger-row">
-          <dt>RSVP</dt>
-          <dd>${
-            hasRealRsvp
-              ? "Registration is now live."
-              : "Add the prefilled Google Form link for the current event."
-          }</dd>
+          <dt>Capacity</dt>
+          <dd>${escapeHtml(
+            seatStatusText || `${capacityState.capacity} seats available.`
+          )}</dd>
+        </div>
+        `
+            : ""
+        }
+        <div class="archive-ledger-row">
+          <dt>Status</dt>
+          <dd>${escapeHtml(statusText)}</dd>
         </div>
       </dl>
 
       <div class="button-row">
-        <a class="button" ${rsvpAttrs}>RSVP</a>
+        <a class="button" ${rsvpAttrs}>
+          ${
+            past
+              ? "RSVP Closed"
+              : closedByCapacity
+              ? "Event Full"
+              : "RSVP"
+          }
+        </a>
       </div>
     </article>
   `;
