@@ -44,7 +44,7 @@ columns: {
 
 const AMS_DATA = {
   seriesTitle: "Axis Mundi Society Proceedings",
-  registerStatus: "Open register",
+  registerStatus: "Active",
 
   upcoming: {
     title: "Session II — Kings and Queens",
