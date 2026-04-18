@@ -90,7 +90,7 @@ const AMS_DATA = {
       staticAttendees: "Founding group",
       topic: "The Paths Forward",
       filed: "Initial gathering",
-      notes: ["First gathering went off with a hit. We began around 7:45–8:00. The conversation meandered from personal pleasantries and catching up with old friends, to current events, to discussions of philosophy, religion, and morality. Much laughter was had, many inspiring thoughts were shared; Andrew Beech recalled a time he came upon a group of old trees during a particular state of conscious experience, and relayed that the spoke the wisdom to him: <strong>You are taught by the fathers you turn to the most.</strong>, which he jokingly said seems like logical, basic advise, but the truth of the statement from such a profound entity had an impact on him. Some cannabis was shared, Papaya Maui."]
+      notes: ["First gathering was a hit. We began around 7:45–8:00. The conversation meandered from personal pleasantries and catching up with old friends, to current events, to discussions of philosophy, religion, and morality. Much laughter was had, many inspiring thoughts were shared; Andrew Beech recalled a time he came upon a group of old trees during a particular state of conscious experience, and relayed that the spoke the wisdom to him: — You are taught by the fathers you turn to the most — which he jokingly said seems like logical, basic advise, but the truth of the statement from such a profound entity had an impact on him. Some cannabis was shared, Papaya Maui."]
     }
   ]
 };
