@@ -31,13 +31,13 @@ const RSVP_SHEET = {
   csvUrl:
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQL1gI6WH9-h_AELPF048JlZ9QfO9sYFvp57TTMqPhH-yOiVy5R3dfhTqkrnScb4uSk4LtIBpwzZeyy/pub?gid=1163879655&single=true&output=csv",
 
-  columns: {
-    eventKey: "eventKey",
-    email: "Email",
-    name: "Name",
-    attendeeCount: "No. of attendees",
-    notes: "Questions/Notes"
-  },
+columns: {
+  eventKey: "eventKey",
+  email: "Email",
+  name: "Name",
+  attendeeCount: "No. of attendees",
+  notes: "Questions/Notes"
+}
 
   attendeeDisplayMode: "count"
 };
