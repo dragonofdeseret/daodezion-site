@@ -1004,7 +1004,23 @@ h3 {
 }
 
 .recorded-entry::before {
+  display: none;
+}
+
+.archive-notes-recorded {
+  position: relative;
+}
+
+.archive-notes-recorded::before {
   content: "Filed Record";
+  position: absolute;
+  top: -0.95rem;
+  right: 0;
+  font: 700 0.7rem "Inter", sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  white-space: nowrap;
 }
 
 .archive-meta-formal strong {
