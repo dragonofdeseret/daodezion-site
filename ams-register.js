@@ -37,7 +37,7 @@ columns: {
   name: "Name",
   attendeeCount: "No. of attendees",
   notes: "Questions/Notes"
-}
+},
 
   attendeeDisplayMode: "count"
 };
