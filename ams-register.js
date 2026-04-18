@@ -70,18 +70,21 @@ const AMS_DATA = {
     rsvpUrl: "https://docs.google.com/forms/d/e/1FAIpQLScqq-wtybruOtKTV5Khf8jfltQhG_sukFfl8JNDfuBW-F02Ng/viewform?usp=pp_url&entry.1051735444=ams-2026-05-16",
   },
 
-  registerStandard: {
-    recordNo:
-      "Accession numbers are generated automatically by year: AMS-2026-001, AMS-2026-002, and so on.",
-    include:
-      "Date, location, attendees, topic, assigned reading, and notes worth revisiting.",
-    aim:
-      "Let the archive carry continuity so the Society accumulates rather than merely recurs.",
-    readings:
-      "Keep assigned selections short enough that a first-time guest can still enter intelligently.",
-    flow:
-      "One reusable Google Form → one master Google Sheet → filtered by eventKey."
-  },
+registerStandard: {
+  heading: "About the Society",
+
+  about:
+    "The Axis Mundi Society convenes recurring gatherings oriented toward philosophical, religious, and experiential inquiry. It is not organized as a sequence of isolated events, but as an accumulating conversation in which each meeting inherits the weight and direction of those that came before it.",
+
+  continuity:
+    "Accordingly, the Society is maintained as a register rather than a feed. What occurs is not simply announced and forgotten, but recorded, returned to, and allowed to condition the shape of future meetings. The archive is not supplementary; it is constitutive.",
+
+  currentCycle:
+    "The present cycle of sessions is oriented toward spontaneity. Topics of interest can be submit between gatherings as suggestions/desires for next conversation.,
+
+  participation:
+    "Attendance is limited and requires registration."
+},
 
   records: [
     {
@@ -513,30 +516,14 @@ function buildRegisterStandardCard() {
 
   standardEl.innerHTML = `
     <article class="card event-card record-standard-card ink-card">
-      <p class="eyebrow">Register standard</p>
+      <p class="eyebrow">${escapeHtml(standard.heading)}</p>
 
-      <dl class="archive-ledger">
-        <div class="archive-ledger-row">
-          <dt>Record no.</dt>
-          <dd>${escapeHtml(standard.recordNo)}</dd>
-        </div>
-        <div class="archive-ledger-row">
-          <dt>Include</dt>
-          <dd>${escapeHtml(standard.include)}</dd>
-        </div>
-        <div class="archive-ledger-row">
-          <dt>Aim</dt>
-          <dd>${escapeHtml(standard.aim)}</dd>
-        </div>
-        <div class="archive-ledger-row">
-          <dt>Readings</dt>
-          <dd>${escapeHtml(standard.readings)}</dd>
-        </div>
-        <div class="archive-ledger-row">
-          <dt>RSVP flow</dt>
-          <dd>${escapeHtml(standard.flow)}</dd>
-        </div>
-      </dl>
+      <div class="archive-notes archive-notes-recorded">
+        <p>${escapeHtml(standard.about)}</p>
+        <p>${escapeHtml(standard.continuity)}</p>
+        <p>${escapeHtml(standard.currentCycle)}</p>
+        <p>${escapeHtml(standard.participation)}</p>
+      </div>
     </article>
   `;
 }
