@@ -80,7 +80,7 @@ registerStandard: {
     "Accordingly, the Society is maintained as a register rather than a feed. What occurs is not simply announced and forgotten, but recorded, returned to, and allowed to condition the shape of future meetings. The archive is not supplementary; it is constitutive.",
 
   currentCycle:
-    "The present cycle of sessions is oriented toward spontaneity. Topics of interest can be submit between gatherings as suggestions/desires for next conversation.,
+    "The present cycle of sessions is oriented toward spontaneity. Topics of interest can be submit between gatherings as suggestions/desires for next conversation.",
 
   participation:
     "Attendance is limited and requires registration."
