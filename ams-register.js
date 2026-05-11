@@ -47,7 +47,7 @@ const AMS_DATA = {
   registerStatus: "Active",
 
   upcoming: {
-    title: "Session II — Kings and Queens",
+    title: "Session II — Kings, Queens, and the Soul",
     date: "2026-05-16",
     eventKey: "ams-2026-05-16",
     location: "Beech Residence / To be confirmed",
