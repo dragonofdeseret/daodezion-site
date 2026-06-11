@@ -23,10 +23,11 @@ interface Props {
 const { path } = Astro.props
 ---
 <section class="hero compact ink-hero">
+  <span class="title-glyph" aria-hidden="true">{path.glyph}</span>
   <p class="eyebrow">Institute library</p>
   <h1>{path.name}</h1>
   <p class="path-subtitle large">{path.subtitle}</p>
-  <p class="sancai"><span class="glyph">{path.glyph}</span> {path.sancai}</p>
+  <p class="sancai">{path.sancai}</p>
   <p class="lede lede-strong">{path.lede}</p>
 </section>
 
