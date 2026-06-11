@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+// DRAKOSOPHIA — the hidden door. Unlisted (noindex), no site chrome, reached
+// only from the faint eye-mark in the footers.
+//
+// NOTE: the passphrase below lives in client-side code, so it is a *threshold*,
+// not a vault — anyone who views source can read it. For true secrecy, gate the
+// inner content behind a server or move it to an unguessable unlisted URL.
+---
+<BaseLayout title="·" appendSiteName={false} chrome={false} noindex={true} bodyClass="drako">
+  <main class="drako-shell">
+    <span class="drako-sigil" aria-hidden="true">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img">
+        <circle class="ds-ring" cx="100" cy="100" r="80" />
+        <circle class="ds-spark" cx="100" cy="20" r="5" />
+        <path class="ds-eye" d="M55,100 Q100,68 145,100 Q100,132 55,100 Z" />
+        <ellipse class="ds-pupil" cx="100" cy="100" rx="5" ry="18" />
+      </svg>
+    </span>
+
+    <h1>Drakosophia</h1>
+    <p class="drako-epigraph">
+      The dragon is not the gate's enemy. The dragon is the gate.<br />
+      Those who know the word already know they are awaited.
+    </p>
+
+    <form class="drako-gate" id="drako-gate" autocomplete="off">
+      <input
+        type="password"
+        id="drako-word"
+        name="word"
+        placeholder="The word"
+        aria-label="Passphrase"
+        spellcheck="false"
+      />
+      <button type="submit">Enter</button>
+    </form>
+    <p class="drako-deny" id="drako-deny" role="status" aria-live="polite"></p>
+
+    <div class="drako-inner" id="drako-inner" hidden>
+      <p class="drako-epigraph">
+        The chamber is being prepared. Your name is known here.<br />
+        Watch the eye; it will open when the work is ready.
+      </p>
+    </div>
+
+    <a class="drako-back" href="/">Return</a>
+  </main>
+
+  <script is:inline>
+    (function () {
+      // Threshold word. Change this to your chosen passphrase (kept lowercase here).
+      var PASSPHRASE = 'ouroboros'
+
+      var form = document.getElementById('drako-gate')
+      var input = document.getElementById('drako-word')
+      var deny = document.getElementById('drako-deny')
+      var inner = document.getElementById('drako-inner')
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault()
+        var word = (input.value || '').trim().toLowerCase()
+        if (word === PASSPHRASE) {
+          form.setAttribute('hidden', '')
+          deny.textContent = ''
+          inner.removeAttribute('hidden')
+        } else {
+          deny.textContent = 'The door does not know that word.'
+          input.value = ''
+          input.focus()
+        }
+      })
+    })()
+  </script>
+</BaseLayout>

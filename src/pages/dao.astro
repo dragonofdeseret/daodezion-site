@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PathArticle from '../components/PathArticle.astro'
+import { paths } from '../data/paths.js'
+---
+<BaseLayout
+  title="Dao | Institute Library"
+  description="Dao, the Way: recommended readings for alignment, practice, movement, and release."
+  active="library"
+  sub="dao"
+  bodyClass="library-active"
+>
+  <PathArticle path={paths.dao} />
+</BaseLayout>

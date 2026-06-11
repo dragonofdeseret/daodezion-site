@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PathArticle from '../components/PathArticle.astro'
+import { paths } from '../data/paths.js'
+---
+<BaseLayout
+  title="Zion | Institute Library"
+  description="Zion, the Order: recommended readings in covenant, law, memory, ritual, and sacred communal form."
+  active="library"
+  sub="zion"
+  bodyClass="library-active"
+>
+  <PathArticle path={paths.zion} />
+</BaseLayout>

@@ -1,0 +1,118 @@
+---
+// ──────────────────────────────────────────────────────────────────────────────
+// BaseLayout — chrome shared by every route: header nav + main content slot +
+// footer + global CSS + per-page <head> metadata.
+//
+//   <BaseLayout title="Library" active="library">
+//     <section>…</section>
+//   </BaseLayout>
+//
+// Pass `chrome={false}` for bare pages with no nav/footer (the Drakosophia
+// threshold). `mainClass` sets the <main> class; `bodyClass` sets <body>.
+// ──────────────────────────────────────────────────────────────────────────────
+
+import Nav from '../components/Nav.astro'
+import Footer from '../components/Footer.astro'
+import '../styles/global.css'
+
+interface Props {
+  /** Browser tab title. Site name is appended unless appendSiteName is false. */
+  title: string
+  description?: string
+  /** Open-Graph image (absolute or root-relative). */
+  ogImage?: string
+  /** Top-level nav highlight. */
+  active?: 'home' | 'library' | 'lodge'
+  /** Active Library sub-path. */
+  sub?: 'dao' | 'de' | 'zion'
+  /** Extra class on <body> (e.g. 'library-active', 'drako'). */
+  bodyClass?: string
+  /** Class on the <main> wrapper. Ignored when chrome is false. */
+  mainClass?: string
+  /** Render the site header + footer. */
+  chrome?: boolean
+  /** Emit <meta name="robots" content="noindex,nofollow">. */
+  noindex?: boolean
+  /** Append " — Dao De Zion Institute" to the title. */
+  appendSiteName?: boolean
+}
+
+const {
+  title,
+  description = 'Dao De Zion Institute — an umbrella project for comparative theology, philosophical study, and disciplined religious reflection, organized around Dao, De, and Zion.',
+  ogImage,
+  active,
+  sub,
+  bodyClass = '',
+  mainClass = 'page',
+  chrome = true,
+  noindex = false,
+  appendSiteName = true,
+} = Astro.props
+
+const fullTitle = appendSiteName ? `${title} — Dao De Zion Institute` : title
+const canonical = new URL(Astro.url.pathname, Astro.site).toString()
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class={bodyClass}>
+    {chrome ? (
+      <div class="site-shell">
+        <Nav active={active} sub={sub} />
+        <main class={mainClass}>
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    ) : (
+      <slot />
+    )}
+  </body>
+</html>
+
+{chrome && (
+  <script>
+    // Mobile nav toggle + placeholder-link guards (ported from the old script.js).
+    const menuToggle = document.querySelector('.menu-toggle')
+    const siteNav = document.querySelector('#site-nav')
+    if (menuToggle && siteNav) {
+      menuToggle.addEventListener('click', () => {
+        const isOpen = siteNav.classList.toggle('open')
+        menuToggle.setAttribute('aria-expanded', String(isOpen))
+      })
+    }
+    document.querySelectorAll('a[data-rsvp], .book-link[href="#"]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        if (link.getAttribute('href') === '#') {
+          event.preventDefault()
+          const rsvp = link.getAttribute('data-rsvp')
+          window.alert(rsvp || 'This link has not been set yet.')
+        }
+      })
+    })
+  </script>
+)}

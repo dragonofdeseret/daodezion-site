@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Dao De Zion">
+  <circle cx="50" cy="50" r="48" fill="#120b09" />
+  <circle cx="50" cy="50" r="41" fill="none" stroke="#c9953b" stroke-width="2" />
+  <line x1="50" y1="76" x2="50" y2="26" stroke="#c9953b" stroke-width="1.5" />
+  <path d="M30,76 L70,76 L62,62 L38,62 Z" fill="none" stroke="#b13a24" stroke-width="2" />
+  <path d="M38,62 L62,62 L55,48 L45,48 Z" fill="none" stroke="#b13a24" stroke-width="2" />
+  <path d="M45,48 L55,48 L50,36 Z" fill="none" stroke="#b13a24" stroke-width="2" />
+  <circle cx="50" cy="24" r="4" fill="#c9953b" />
+</svg>

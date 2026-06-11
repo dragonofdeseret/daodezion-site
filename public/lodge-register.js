@@ -1,5 +1,5 @@
 /*
-  AXIS MUNDI SOCIETY REGISTER
+  LODGE OF ZION REGISTER
   ---------------------------
   DURABLE ARCHITECTURE
   One reusable Google Form + one master Google Sheet + eventKey filtering
@@ -42,8 +42,8 @@ columns: {
   attendeeDisplayMode: "count"
 };
 
-const AMS_DATA = {
-  seriesTitle: "Axis Mundi Society Proceedings",
+const LODGE_DATA = {
+  seriesTitle: "Lodge of Zion Proceedings",
   registerStatus: "Active",
 
   upcoming: {
@@ -71,16 +71,16 @@ const AMS_DATA = {
   },
 
 registerStandard: {
-  heading: "About the Society",
+  heading: "About the Lodge",
 
   about:
-    "The Axis Mundi Society convenes recurring gatherings oriented toward philosophical, religious, and experiential inquiry. It is not organized as a sequence of isolated events, but as an accumulating conversation in which each meeting inherits the weight and direction of those that came before it.",
+    "The Lodge of Zion is the gathering body of Dao De Zion Institute — its recurring forum for study sessions, round-tables, and recorded proceedings. It is not organized as a sequence of isolated events, but as an accumulating conversation in which each meeting inherits the weight and direction of those that came before it.",
 
   continuity:
-    "Accordingly, the Society is maintained as a register rather than a feed. What occurs is not simply announced and forgotten, but recorded, returned to, and allowed to condition the shape of future meetings. The archive is not supplementary; it is constitutive.",
+    "Its founding chapter, The Holy Smoke, is the living hearth where the Lodge actually convenes: a small circle that meets to read, argue, and keep faith with the work. Accordingly the Lodge is maintained as a register rather than a feed. What occurs is not announced and forgotten, but recorded, returned to, and allowed to condition the shape of future meetings. The archive is not supplementary; it is constitutive.",
 
   currentCycle:
-    "The present cycle of sessions is oriented toward spontaneity. Topics of interest can be submit between gatherings as suggestions/desires for next conversation.",
+    "The present cycle of sessions is oriented toward spontaneity. Topics of interest may be submitted between gatherings as suggestions for the next conversation.",
 
   participation:
     "Attendance is limited and requires registration."
@@ -158,7 +158,7 @@ function normalizeRecords(records) {
       yearRecords.forEach((record, index) => {
         normalizedRecords.push({
           ...record,
-          recordNo: `AMS-${year}-${padNumber(index + 1)}`
+          recordNo: `LOZ-${year}-${padNumber(index + 1)}`
         });
       });
     });
@@ -317,14 +317,14 @@ async function fetchSheetRows() {
     const csvText = await response.text();
     return parseCsv(csvText);
   } catch (error) {
-    console.error("AMS RSVP sheet fetch failed:", error);
+    console.error("Lodge RSVP sheet fetch failed:", error);
     return [];
   }
 }
 
 function filterRowsForUpcomingEvent(rows) {
   const eventKeyColumn = RSVP_SHEET.columns.eventKey;
-  const currentEventKey = String(AMS_DATA.upcoming.eventKey || "").trim();
+  const currentEventKey = String(LODGE_DATA.upcoming.eventKey || "").trim();
 
   if (!currentEventKey) return [];
 
@@ -373,7 +373,7 @@ function formatUpcomingAttendeeDisplay(summary) {
 }
 
 function getCapacityState(summary) {
-  const capacity = AMS_DATA.upcoming.capacity;
+  const capacity = LODGE_DATA.upcoming.capacity;
 
   if (capacity == null || Number.isNaN(Number(capacity)) || Number(capacity) < 1) {
     return {
@@ -419,8 +419,8 @@ function getSeatStatusText(capacityState) {
 }
 
 function buildUpcomingCard(upcomingSummary) {
-  const upcoming = AMS_DATA.upcoming;
-  const upcomingEl = document.querySelector("[data-ams-upcoming]");
+  const upcoming = LODGE_DATA.upcoming;
+  const upcomingEl = document.querySelector("[data-lodge-upcoming]");
   if (!upcomingEl) return;
 
   const past = isEventPast(upcoming.date);
@@ -510,8 +510,8 @@ function buildUpcomingCard(upcomingSummary) {
 }
 
 function buildRegisterStandardCard() {
-  const standard = AMS_DATA.registerStandard;
-  const standardEl = document.querySelector("[data-ams-standard]");
+  const standard = LODGE_DATA.registerStandard;
+  const standardEl = document.querySelector("[data-lodge-standard]");
   if (!standardEl) return;
 
   standardEl.innerHTML = `
@@ -529,27 +529,27 @@ function buildRegisterStandardCard() {
 }
 
 function buildRegisterIndex(records) {
-  const indexEl = document.querySelector("[data-ams-register-index]");
+  const indexEl = document.querySelector("[data-lodge-register-index]");
   if (!indexEl) return;
 
   const years = Array.from(new Set(records.map((record) => record.year))).sort(compareYearDesc);
-  const currentYear = years[0] || getYearFromISO(AMS_DATA.upcoming.date);
+  const currentYear = years[0] || getYearFromISO(LODGE_DATA.upcoming.date);
 
   indexEl.innerHTML = `
     <div class="register-index card ink-card">
       <p class="eyebrow">Index</p>
       <div class="register-index-grid">
-        <p><strong>Series</strong><span>${escapeHtml(AMS_DATA.seriesTitle)}</span></p>
+        <p><strong>Series</strong><span>${escapeHtml(LODGE_DATA.seriesTitle)}</span></p>
         <p><strong>Current year</strong><span>${escapeHtml(currentYear)}</span></p>
         <p><strong>Records entered</strong><span>${escapeHtml(records.length)}</span></p>
-        <p><strong>Status</strong><span>${escapeHtml(AMS_DATA.registerStatus)}</span></p>
+        <p><strong>Status</strong><span>${escapeHtml(LODGE_DATA.registerStatus)}</span></p>
       </div>
     </div>
   `;
 }
 
 function buildYearNav(groupedRecords) {
-  const yearNavEl = document.querySelector("[data-ams-year-nav]");
+  const yearNavEl = document.querySelector("[data-lodge-year-nav]");
   if (!yearNavEl) return;
 
   const years = Object.keys(groupedRecords)
@@ -568,7 +568,7 @@ function buildYearNav(groupedRecords) {
         ${years
           .map(
             (year) =>
-              `<a class="button" href="#ams-year-${year}" style="margin-right: 0.55rem; margin-bottom: 0.55rem;">${year}</a>`
+              `<a class="button" href="#lodge-year-${year}" style="margin-right: 0.55rem; margin-bottom: 0.55rem;">${year}</a>`
           )
           .join("")}
       </div>
@@ -577,7 +577,7 @@ function buildYearNav(groupedRecords) {
 }
 
 function buildRegisterYears(groupedRecords) {
-  const yearsEl = document.querySelector("[data-ams-register-years]");
+  const yearsEl = document.querySelector("[data-lodge-register-years]");
   if (!yearsEl) return;
 
   const years = Object.keys(groupedRecords)
@@ -617,7 +617,7 @@ function buildRegisterYears(groupedRecords) {
         .join("");
 
       return `
-        <section class="archive-year" id="ams-year-${year}">
+        <section class="archive-year" id="lodge-year-${year}">
           <div class="archive-year-heading">
             <p class="archive-year-label">Register Year</p>
             <h3>${escapeHtml(year)}</h3>
@@ -629,8 +629,8 @@ function buildRegisterYears(groupedRecords) {
     .join("");
 }
 
-async function renderAMSRegister() {
-  const normalizedRecords = normalizeRecords(AMS_DATA.records);
+async function renderLodgeRegister() {
+  const normalizedRecords = normalizeRecords(LODGE_DATA.records);
   const groupedRecords = groupRecordsByYear(normalizedRecords);
 
   const rows = await fetchSheetRows();
@@ -644,4 +644,4 @@ async function renderAMSRegister() {
   buildRegisterYears(groupedRecords);
 }
 
-document.addEventListener("DOMContentLoaded", renderAMSRegister);
+document.addEventListener("DOMContentLoaded", renderLodgeRegister);

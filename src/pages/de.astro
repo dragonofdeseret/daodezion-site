@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PathArticle from '../components/PathArticle.astro'
+import { paths } from '../data/paths.js'
+---
+<BaseLayout
+  title="De | Institute Library"
+  description="De, the Witness: recommended readings in first-person life, disclosure, consciousness, and symbolic encounter."
+  active="library"
+  sub="de"
+  bodyClass="library-active"
+>
+  <PathArticle path={paths.de} />
+</BaseLayout>

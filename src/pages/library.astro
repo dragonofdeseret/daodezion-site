@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { paths, pathOrder } from '../data/paths.js'
+---
+<BaseLayout
+  title="Library"
+  description="The Institute Library organizes recommended study through Dao, De, and Zion."
+  active="library"
+  bodyClass="library-active"
+>
+  <section class="hero compact ink-hero">
+    <p class="eyebrow">Institute library</p>
+    <h1>Library</h1>
+    <p class="lede lede-strong">
+      The library is arranged not by civilization, period, or confession, but by mode of
+      approach. <em>Dao</em> concerns alignment. <em>De</em> concerns lived experience and
+      first-person witness. <em>Zion</em> concerns the shaping of a life, a people, and a
+      world through durable form.
+    </p>
+  </section>
+
+  <section class="statement-block compact-block">
+    <p>
+      Most readers will arrive through one path and require the correction of the other
+      two. Order without witness hardens and stifles. Witness without order disperses and
+      wanders. The way without either can remain beautiful yet unrealized.
+    </p>
+  </section>
+
+  <section class="triad-grid">
+    {pathOrder.map((slug) => {
+      const p = paths[slug]
+      return (
+        <article class="card path-card ink-card">
+          <span class="path-glyph" aria-hidden="true">{p.glyph}</span>
+          <h2><a href={`/${p.slug}`}>{p.name}</a></h2>
+          <p class="path-subtitle">{p.subtitle} · {p.sancai.split(' — ')[0]}</p>
+          <p>{p.triadBlurb}</p>
+        </article>
+      )
+    })}
+  </section>
+
+  <section class="library-index-note card ink-card">
+    <h2>How the Library is arranged</h2>
+    <p>
+      Enter through the path that most nearly speaks to your seeking. Readers over-formed
+      by structure may need the way. Readers diffused by abstraction may need the order.
+      Readers who have inherited speech without first-person contact may need the witness.
+    </p>
+  </section>
+</BaseLayout>

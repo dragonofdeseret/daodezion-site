@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+<BaseLayout
+  title="Lodge of Zion"
+  description="The Lodge of Zion: the gathering body of Dao De Zion Institute. Sessions, announcements, and archived proceedings, convened by its founding chapter, The Holy Smoke."
+  active="lodge"
+>
+  <section class="hero compact ink-hero">
+    <p class="eyebrow">The gathering body · sessions · proceedings</p>
+    <h1>Lodge of Zion</h1>
+    <p class="lede lede-strong">
+      The Lodge is where the Institute becomes a people rather than a syllabus—a recurring
+      assembly for study, argument, and the slow accumulation of a shared mind. What is
+      said is kept; the register is the Lodge's memory of itself.
+    </p>
+  </section>
+
+  <section class="statement-block compact-block">
+    <p>
+      We have been told that if we stop seeking we shall not only find no more but lose the
+      treasures we already have.
+      <br />— Hugh Nibley
+    </p>
+  </section>
+
+  <section class="holy-smoke ink-frame">
+    <p class="eyebrow">The founding chapter</p>
+    <h2>The Holy Smoke</h2>
+    <p>
+      Before the Lodge had a name, there was a circle of friends who simply gathered—to
+      read, to argue, to laugh, to keep faith with one another and with the questions. They
+      called themselves <strong>The Holy Smoke</strong>, and they remain the hearth at which
+      the Lodge of Zion convenes: its first chapter, and the living proof that this is
+      fellowship before it is an institution.
+    </p>
+  </section>
+
+  <section class="split-section">
+    <div data-lodge-upcoming></div>
+    <div data-lodge-standard></div>
+  </section>
+
+  <section class="archive-section">
+    <div class="section-heading">
+      <h2>Meeting Register</h2>
+      <p>Archive · Record of Proceedings</p>
+    </div>
+
+    <div data-lodge-register-index></div>
+    <div data-lodge-year-nav></div>
+    <div data-lodge-register-years></div>
+  </section>
+
+  <script is:inline src="/lodge-register.js"></script>
+</BaseLayout>
