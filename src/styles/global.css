@@ -9,38 +9,45 @@
    1. ROOT / TOKENS
 ========================================= */
 :root {
-  --bg-deep: #0b0908;
-  --bg-header: #0d0b0a;
-  --bg-header-2: #17110f;
+  /* type — inscriptional caps for titles, manuscript old-style for prose */
+  --font-display: "Cinzel", "Trajan Pro", "Times New Roman", serif;
+  --font-body: "EB Garamond", Georgia, "Times New Roman", serif;
+  --font-label: "EB Garamond", Georgia, serif;
 
-  --paper: #e7d8c4;
-  --paper-soft: #dcc8b0;
-  --paper-strong: #f0e4d4;
-  --paper-record: #e2d0ba;
+  --bg-deep: #0b0807;
+  --bg-header: #100b09;
+  --bg-header-2: #1b120e;
 
-  --ink: #15110f;
-  --ink-soft: #4b3f37;
-  --ink-faint: #6e5d52;
+  /* aged vellum */
+  --paper: #e3d1b6;
+  --paper-soft: #d4be9f;
+  --paper-strong: #efe1cb;
+  --paper-record: #dcc7aa;
 
-  --red-deep: #7b2318;
-  --red-bright: #b13a24;
-  --red-dark: #59170f;
-  --red-soft: rgba(177, 58, 36, 0.12);
+  --ink: #1d1409;
+  --ink-soft: #4a3a28;
+  --ink-faint: #6f5b43;
 
-  --gold: #c9953b;
-  --gold-dim: #a8772b;
-  --gold-soft: rgba(201, 149, 59, 0.16);
+  --red-deep: #762216;
+  --red-bright: #a3311d;
+  --red-dark: #54150e;
+  --red-soft: rgba(163, 49, 29, 0.12);
 
-  --line: rgba(72, 36, 22, 0.18);
-  --line-strong: rgba(54, 23, 12, 0.34);
-  --line-faint: rgba(54, 23, 12, 0.10);
+  --gold: #b3852f;
+  --gold-dim: #976f25;
+  --gold-soft: rgba(179, 133, 47, 0.16);
 
-  --shadow: 0 18px 42px rgba(20, 10, 8, 0.12);
-  --shadow-soft: 0 10px 28px rgba(20, 10, 8, 0.08);
+  --line: rgba(74, 40, 22, 0.22);
+  --line-strong: rgba(54, 23, 12, 0.42);
+  --line-faint: rgba(54, 23, 12, 0.12);
+
+  /* flatter, page-edge shadows — a top highlight + a long soft drop */
+  --shadow: 0 1px 0 rgba(255, 248, 235, 0.45), 0 20px 46px rgba(30, 17, 8, 0.10);
+  --shadow-soft: 0 8px 22px rgba(30, 17, 8, 0.08);
 
   --content-max: 1080px;
-  --measure: 760px;
-  --radius: 18px;
+  --measure: 720px;
+  --radius: 3px;
 
   --transition: 180ms ease;
 }
@@ -56,13 +63,19 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 0% 14%, rgba(123, 35, 24, 0.20), transparent 22%),
-    radial-gradient(circle at 100% 12%, rgba(177, 58, 36, 0.16), transparent 18%),
-    radial-gradient(circle at 82% 76%, rgba(96, 28, 18, 0.14), transparent 24%),
-    linear-gradient(180deg, #eadcc9 0%, #dbc7af 100%);
+    radial-gradient(circle at 50% -10%, rgba(179, 133, 47, 0.12), transparent 42%),
+    radial-gradient(circle at 0% 10%, rgba(118, 34, 22, 0.10), transparent 30%),
+    radial-gradient(circle at 100% 6%, rgba(163, 49, 29, 0.08), transparent 26%),
+    radial-gradient(ellipse at 50% 118%, rgba(40, 22, 10, 0.20), transparent 60%),
+    linear-gradient(180deg, #e8d8bd 0%, #ddc9ab 58%, #d2bb99 100%);
+  background-attachment: fixed;
   color: var(--ink);
-  font-family: "Libre Baskerville", Georgia, serif;
+  font-family: var(--font-body);
+  font-size: 1.125rem;
   line-height: 1.72;
+  font-feature-settings: "liga", "onum", "kern";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   position: relative;
 }
 
@@ -71,21 +84,19 @@ body::before {
   content: "";
   position: fixed;
   inset: 0 0 auto 0;
-  height: 10px;
+  height: 3px;
   background:
     linear-gradient(
       90deg,
-      #050404 0%,
-      #1a0e0b 12%,
-      var(--red-deep) 24%,
-      var(--red-bright) 42%,
-      #1b0f0d 60%,
-      var(--gold) 82%,
-      #120907 100%
+      transparent 0%,
+      var(--red-dark) 12%,
+      var(--gold) 38%,
+      var(--gold) 62%,
+      var(--red-dark) 88%,
+      transparent 100%
     );
   z-index: 100;
   pointer-events: none;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.24);
 }
 
 ::selection {
@@ -134,7 +145,7 @@ a:hover {
   backdrop-filter: blur(14px);
   background:
     linear-gradient(180deg, rgba(10, 9, 8, 0.98), rgba(20, 15, 13, 0.96));
-  border-bottom: 1px solid rgba(201, 149, 59, 0.12);
+  border-bottom: 1px solid rgba(179, 133, 47, 0.24);
   box-shadow: 0 10px 30px rgba(7, 4, 3, 0.24);
 }
 
@@ -147,10 +158,11 @@ a:hover {
 }
 
 .brand {
-  font-size: 1.02rem;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: #edd8bc;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.94rem;
+  letter-spacing: 0.2em;
+  color: #ecd6b4;
 }
 
 .menu-toggle {
@@ -160,7 +172,7 @@ a:hover {
   color: #edd8bc;
   padding: 0.55rem 0.85rem;
   border-radius: 999px;
-  font: 500 0.9rem "Inter", sans-serif;
+  font: 500 0.9rem var(--font-label);
   cursor: pointer;
 }
 
@@ -180,7 +192,11 @@ a:hover {
 .site-nav > a,
 .nav-drop-link {
   position: relative;
-  font: 500 0.92rem "Inter", sans-serif;
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: rgba(239, 222, 198, 0.76);
 }
 
@@ -259,7 +275,7 @@ a:hover {
 
 .nav-drop-menu a {
   width: fit-content;
-  font: 500 0.92rem "Inter", sans-serif;
+  font: 500 0.92rem var(--font-label);
   color: #e5cfb3;
 }
 
@@ -291,9 +307,9 @@ body.library-active .nav-dropdown:focus-within .nav-drop-menu {
 }
 
 .eyebrow {
-  margin: 0 0 0.7rem;
-  font: 700 0.78rem "Inter", sans-serif;
-  letter-spacing: 0.16em;
+  margin: 0 0 0.8rem;
+  font: 600 0.74rem var(--font-label);
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--gold-dim);
 }
@@ -302,24 +318,31 @@ h1,
 h2,
 h3 {
   font-weight: 400;
-  line-height: 1.14;
+  line-height: 1.16;
   margin: 0;
-  color: #17110e;
+  color: #1c1409;
 }
 
 h1 {
-  font-size: clamp(2.45rem, 5vw, 4.5rem);
-  letter-spacing: -0.04em;
-  margin-bottom: 0.95rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.05rem, 4.4vw, 3.55rem);
+  letter-spacing: 0.018em;
+  line-height: 1.08;
+  margin-bottom: 1.05rem;
 }
 
 h2 {
-  font-size: clamp(1.32rem, 2vw, 1.95rem);
-  margin-bottom: 0.95rem;
+  font-weight: 600;
+  font-size: clamp(1.42rem, 2vw, 2.05rem);
+  letter-spacing: 0.004em;
+  margin-bottom: 0.9rem;
 }
 
 h3 {
-  font-size: 1.08rem;
+  font-weight: 600;
+  font-size: 1.16rem;
+  letter-spacing: 0.01em;
   margin-bottom: 0.7rem;
 }
 
@@ -330,7 +353,7 @@ h3 {
 .page th,
 .page dd,
 .page dt {
-  font-size: 1rem;
+  font-size: 1.08rem;
 }
 
 .lede {
@@ -397,8 +420,8 @@ h3 {
 .library-table-wrap,
 .register-index {
   background:
-    linear-gradient(180deg, rgba(241, 230, 214, 0.86), rgba(223, 203, 179, 0.92));
-  border: 1px solid rgba(90, 41, 23, 0.14);
+    linear-gradient(180deg, rgba(243, 232, 215, 0.92), rgba(221, 201, 176, 0.94));
+  border: 1px solid rgba(90, 41, 23, 0.24);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -406,7 +429,7 @@ h3 {
 .card,
 .note-block,
 .archive-entry {
-  padding: 1.45rem 1.4rem;
+  padding: 1.7rem 1.7rem;
 }
 
 .ink-card,
@@ -423,7 +446,17 @@ h3 {
   pointer-events: none;
   background:
     linear-gradient(135deg, rgba(255,255,255,0.10), transparent 36%),
-    linear-gradient(315deg, rgba(123, 35, 24, 0.04), transparent 42%);
+    linear-gradient(315deg, rgba(118, 34, 22, 0.04), transparent 42%);
+}
+
+/* inscribed-tablet inner rule */
+.ink-card::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(118, 34, 22, 0.12);
+  border-radius: 1px;
+  pointer-events: none;
 }
 
 .framed-note {
@@ -607,7 +640,7 @@ h3 {
 
 .reading-class {
   margin: 0 0 0.55rem;
-  font: 700 0.72rem "Inter", sans-serif;
+  font: 700 0.72rem var(--font-label);
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
@@ -785,7 +818,7 @@ h3 {
 }
 
 .library-table th {
-  font: 700 0.86rem "Inter", sans-serif;
+  font: 700 0.86rem var(--font-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gold-dim);
@@ -841,14 +874,16 @@ h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.8rem;
-  padding: 0.65rem 1rem;
-  border-radius: 999px;
-  border: 1px solid rgba(89, 23, 15, 0.24);
+  min-height: 2.7rem;
+  padding: 0.6rem 1.3rem;
+  border-radius: 2px;
+  border: 1px solid rgba(151, 111, 37, 0.5);
   background:
-    linear-gradient(180deg, rgba(245, 233, 217, 0.94), rgba(226, 207, 182, 0.94));
+    linear-gradient(180deg, rgba(246, 234, 217, 0.94), rgba(224, 204, 178, 0.94));
   color: var(--ink);
-  font: 500 0.92rem "Inter", sans-serif;
+  font: 600 0.78rem var(--font-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   transition:
     transform var(--transition),
     border-color var(--transition),
@@ -890,7 +925,7 @@ h3 {
   position: absolute;
   top: 0.85rem;
   right: 1rem;
-  font: 700 0.7rem "Inter", sans-serif;
+  font: 700 0.7rem var(--font-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--gold-dim);
@@ -937,7 +972,7 @@ h3 {
 
 .archive-ledger dt {
   margin: 0;
-  font: 700 0.78rem "Inter", sans-serif;
+  font: 700 0.78rem var(--font-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gold-dim);
@@ -992,7 +1027,7 @@ h3 {
 }
 
 .archive-year-label {
-  font: 700 0.72rem "Inter", sans-serif;
+  font: 700 0.72rem var(--font-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--red-bright);
@@ -1016,7 +1051,7 @@ h3 {
   position: absolute;
   top: -0.95rem;
   right: 0;
-  font: 700 0.7rem "Inter", sans-serif;
+  font: 700 0.7rem var(--font-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--gold-dim);
@@ -1024,7 +1059,7 @@ h3 {
 }
 
 .archive-meta-formal strong {
-  font: 700 0.72rem "Inter", sans-serif;
+  font: 700 0.72rem var(--font-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold-dim);
@@ -1050,7 +1085,7 @@ h3 {
 
 .record-type {
   margin: 0;
-  font: 700 0.72rem "Inter", sans-serif;
+  font: 700 0.72rem var(--font-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--red-bright);
@@ -1201,17 +1236,53 @@ h3 {
 .emblem .em-earth,
 .emblem .em-mount,
 .emblem .em-axis,
-.emblem .em-star {
+.emblem .em-gate,
+.emblem .em-star,
+.emblem .em-horizon {
   fill: none;
   vector-effect: non-scaling-stroke;
 }
 
-.emblem .em-heaven { stroke: var(--gold-dim); stroke-width: 1.1; opacity: 0.85; }
-.emblem .em-earth  { stroke: var(--ink-faint); stroke-width: 1; opacity: 0.32; }
-.emblem .em-mount  { stroke: var(--red-deep); stroke-width: 1.4; opacity: 0.92; }
-.emblem .em-axis   { stroke: var(--gold-dim); stroke-width: 1; opacity: 0.7; }
-.emblem .em-star   { fill: var(--gold); stroke: none; opacity: 0.95; }
-.emblem .em-horizon { stroke: var(--ink-faint); stroke-width: 1; opacity: 0.3; }
+.emblem .em-heaven  { stroke: var(--gold-dim); stroke-width: 1.1; opacity: 0.9; }
+.emblem .em-heaven-2 { fill: none; stroke: var(--gold-dim); stroke-width: 0.7; opacity: 0.55; vector-effect: non-scaling-stroke; }
+.emblem .em-earth   { stroke: var(--ink-faint); stroke-width: 0.9; opacity: 0.34; }
+.emblem .em-mount   { stroke: var(--red-deep); stroke-width: 1.5; opacity: 0.95; }
+.emblem .em-axis    { stroke: var(--gold-dim); stroke-width: 0.8; opacity: 0.6; }
+.emblem .em-gate    { stroke: var(--red-bright); stroke-width: 1.4; opacity: 0.95; }
+.emblem .em-horizon { stroke: var(--ink-faint); stroke-width: 0.9; opacity: 0.32; }
+.emblem .em-star    { stroke: var(--gold); stroke-width: 1; opacity: 0.95; }
+.emblem .em-halo    { fill: var(--gold); opacity: 0.1; stroke: none; }
+.emblem .em-core    { fill: var(--gold); opacity: 0.95; stroke: none; }
+
+/* --- Ornamental gilt divider --- */
+.ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  max-width: var(--measure);
+  margin: 2.4rem auto;
+}
+
+.ornament::before,
+.ornament::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong) 40%, var(--line-strong) 60%, transparent);
+}
+
+.ornament .lozenge {
+  color: var(--gold);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  transform: translateY(-1px);
+}
+
+.ornament.short {
+  max-width: 200px;
+  margin: 1.3rem auto 0;
+}
 
 /* temple-hero: centered emblem + invocation */
 .temple-hero {
@@ -1235,7 +1306,7 @@ h3 {
   align-items: baseline;
   gap: 0.5rem;
   margin: 0 0 0.85rem;
-  font: 700 0.7rem "Inter", sans-serif;
+  font: 700 0.7rem var(--font-label);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -1262,13 +1333,14 @@ h3 {
 /* --- Illuminated drop-cap --- */
 .illuminated::first-letter {
   float: left;
-  font-family: "Libre Baskerville", Georgia, serif;
-  font-size: 3.5rem;
-  line-height: 0.72;
-  padding: 0.32rem 0.5rem 0 0;
-  margin-top: 0.18rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 4.3rem;
+  line-height: 0.74;
+  padding: 0.3rem 0.62rem 0 0;
+  margin-top: 0.1rem;
   color: var(--red-deep);
-  text-shadow: 0 1px 0 var(--gold-soft);
+  text-shadow: 0.5px 0.5px 0 var(--gold-soft), 1px 1px 0 rgba(84, 21, 14, 0.12);
 }
 
 /* --- Concentric degrees ladder --- */
@@ -1404,9 +1476,11 @@ body.drako::before { display: none; }
 .drako-sigil .ds-spark { fill: var(--gold); }
 
 .drako-shell h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
   color: #ecd9bd;
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  letter-spacing: 0.04em;
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  letter-spacing: 0.14em;
   margin-bottom: 1.2rem;
 }
 
@@ -1446,7 +1520,7 @@ body.drako::before { display: none; }
   color: #ecd9bd;
   border-radius: 999px;
   padding: 0.7rem 1.3rem;
-  font: 500 0.9rem "Inter", sans-serif;
+  font: 500 0.9rem var(--font-label);
   cursor: pointer;
   transition: border-color var(--transition), background var(--transition);
 }
@@ -1466,7 +1540,7 @@ body.drako::before { display: none; }
 
 .drako-back {
   margin-top: 3rem;
-  font: 500 0.78rem "Inter", sans-serif;
+  font: 500 0.78rem var(--font-label);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(217, 199, 173, 0.45);

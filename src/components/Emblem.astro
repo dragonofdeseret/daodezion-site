@@ -1,17 +1,28 @@
 ---
 // Central emblem: round heaven / square earth (天圆地方, also the Masonic
-// compass + square) enclosing a stepped temple-mountain with an axis rising
-// to a star. Three tiers = Dao / De / Zion. Purely decorative.
+// compass + square) enclosing a stepped temple-mountain. An arched doorway —
+// the veil / threshold — sits at its base; the world-axis rises through the
+// open temple to a radiant star. Three tiers = Dao / De / Zion. Decorative.
 ---
 <span class="emblem" aria-hidden="true">
   <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img">
-    <circle class="em-heaven" cx="100" cy="100" r="90" />
-    <rect class="em-earth" x="44" y="44" width="112" height="112" />
-    <line class="em-horizon" x1="22" y1="150" x2="178" y2="150" />
-    <path class="em-mount" d="M62,150 L138,150 L128,127 L72,127 Z" />
-    <path class="em-mount" d="M74,127 L126,127 L117,104 L83,104 Z" />
-    <path class="em-mount" d="M85,104 L115,104 L108,82 L92,82 Z" />
-    <line class="em-axis" x1="100" y1="150" x2="100" y2="46" />
-    <path class="em-star" d="M100,30 L103.5,40 L114,42 L103.5,44 L100,54 L96.5,44 L86,42 L96.5,40 Z" />
+    <!-- heaven (round) -->
+    <circle class="em-heaven" cx="100" cy="100" r="92" />
+    <circle class="em-heaven-2" cx="100" cy="100" r="86" />
+    <!-- earth (square) -->
+    <rect class="em-earth" x="46" y="46" width="108" height="108" />
+    <line class="em-horizon" x1="24" y1="152" x2="176" y2="152" />
+    <!-- world-axis, behind the open temple -->
+    <line class="em-axis" x1="100" y1="152" x2="100" y2="52" />
+    <!-- stepped temple-mountain -->
+    <path class="em-mount" d="M58,152 L142,152 L132,130 L68,130 Z" />
+    <path class="em-mount" d="M72,130 L128,130 L119,108 L81,108 Z" />
+    <path class="em-mount" d="M84,108 L116,108 L109,88 L91,88 Z" />
+    <!-- the gate / veil -->
+    <path class="em-gate" d="M94,152 L94,140 Q100,132 106,140 L106,152" />
+    <!-- radiant star -->
+    <circle class="em-halo" cx="100" cy="48" r="13" />
+    <path class="em-star" d="M100,32 L102.5,45.5 L114,48 L102.5,50.5 L100,64 L97.5,50.5 L86,48 L97.5,45.5 Z" />
+    <circle class="em-core" cx="100" cy="48" r="2.4" />
   </svg>
 </span>
