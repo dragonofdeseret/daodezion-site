@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 440" fill="none" stroke="#b3852f" stroke-width="1">
+  <defs><clipPath id="b"><circle cx="220" cy="220" r="200"/></clipPath></defs>
+  <g clip-path="url(#b)" stroke-opacity="0.16">
+    <circle cx="20.00" cy="220.00" r="100"/>
+    <circle cx="70.00" cy="306.60" r="100"/>
+    <circle cx="120.00" cy="393.21" r="100"/>
+    <circle cx="70.00" cy="133.40" r="100"/>
+    <circle cx="120.00" cy="220.00" r="100"/>
+    <circle cx="170.00" cy="306.60" r="100"/>
+    <circle cx="220.00" cy="393.21" r="100"/>
+    <circle cx="120.00" cy="46.79" r="100"/>
+    <circle cx="170.00" cy="133.40" r="100"/>
+    <circle cx="220.00" cy="220.00" r="100"/>
+    <circle cx="270.00" cy="306.60" r="100"/>
+    <circle cx="320.00" cy="393.21" r="100"/>
+    <circle cx="220.00" cy="46.79" r="100"/>
+    <circle cx="270.00" cy="133.40" r="100"/>
+    <circle cx="320.00" cy="220.00" r="100"/>
+    <circle cx="370.00" cy="306.60" r="100"/>
+    <circle cx="320.00" cy="46.79" r="100"/>
+    <circle cx="370.00" cy="133.40" r="100"/>
+    <circle cx="420.00" cy="220.00" r="100"/>
+  </g>
+  <circle cx="220" cy="220" r="200" stroke-opacity="0.30"/>
+  <circle cx="220" cy="220" r="209" stroke-opacity="0.14"/>
+</svg>

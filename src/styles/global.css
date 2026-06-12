@@ -1452,15 +1452,15 @@ h3 {
    21. DRAKOSOPHIA — THE HIDDEN DOOR
 ========================================= */
 body.drako {
-  /* dragon-scale (seigaiha) ground: gold scales on near-black, oxblood + gold glow */
-  --scale: rgba(179, 133, 47, 0.15);
+  /* sacred-geometry ground: a faint Seed/Flower of Life over near-black, oxblood + gold glow */
   background-color: #0b0807;
   background-image:
     radial-gradient(ellipse at 50% -10%, rgba(163, 49, 29, 0.26), transparent 55%),
     radial-gradient(ellipse at 50% 116%, rgba(179, 133, 47, 0.12), transparent 55%),
-    radial-gradient(circle at 100% 150%, #0b0807 24%, var(--scale) 25%, var(--scale) 28%, #0b0807 29%, #0b0807 36%, var(--scale) 37%, var(--scale) 40%, #0b0807 41%, #0b0807 49%, var(--scale) 50%, var(--scale) 53%, #0b0807 54%),
-    radial-gradient(circle at 0 150%, #0b0807 24%, var(--scale) 25%, var(--scale) 28%, #0b0807 29%, #0b0807 36%, var(--scale) 37%, var(--scale) 40%, #0b0807 41%, #0b0807 49%, var(--scale) 50%, var(--scale) 53%, #0b0807 54%);
-  background-size: 100% 100%, 100% 100%, 120px 60px, 120px 60px;
+    url("/seed-of-life.svg");
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: center, center, center;
+  background-size: 100% 100%, 100% 100%, min(112vmin, 880px) auto;
   background-attachment: fixed;
   color: #d9c7ad;
 }
