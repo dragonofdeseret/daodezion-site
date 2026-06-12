@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Emblem from '../components/Emblem.astro'
+---
+<BaseLayout title="Not in the canon" noindex={true} mainClass="page page-home">
+  <section class="temple-hero">
+    <Emblem />
+    <p class="eyebrow">404 · Off the path</p>
+    <h1>Not in the canon</h1>
+    <p class="lede lede-strong">
+      The leaf you sought is missing from the codex. Return to the
+      <a class="inline-link" href="/">threshold</a>, or enter the
+      <a class="inline-link" href="/library">Library</a>.
+    </p>
+    <div class="ornament short"><span class="lozenge">❖</span></div>
+  </section>
+</BaseLayout>

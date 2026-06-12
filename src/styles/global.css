@@ -1396,17 +1396,6 @@ h3 {
 .degrees li:nth-child(1)::before { left: 0.1rem; }
 .degrees li:nth-child(2)::before { left: 0.6rem; }
 .degrees li:nth-child(3)::before { left: 1.1rem; background: var(--gold-soft); }
-.degrees li.degree-inner {
-  padding-left: 3.2rem;
-  color: var(--ink-faint);
-  font-style: italic;
-}
-.degrees li.degree-inner::before {
-  left: 1.6rem;
-  border-style: dashed;
-  border-color: var(--ink-faint);
-}
-
 .degrees .degree-name {
   font-weight: 400;
   color: var(--ink);
