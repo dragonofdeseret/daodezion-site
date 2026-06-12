@@ -1,54 +1,35 @@
 /*
-  LODGE OF ZION REGISTER
-  ---------------------------
-  DURABLE ARCHITECTURE
-  One reusable Google Form + one master Google Sheet + eventKey filtering
+  LODGE OF ZION — UPCOMING SESSION + RSVP
+  ---------------------------------------
+  The meeting register (archive of past proceedings) is now rendered
+  server-side on the Lodge page from the `sessions` content collection.
 
-  WHAT THIS VERSION ADDS
-  ----------------------
-  - capacity limit display for upcoming event
-  - RSVP closes automatically when:
-      1. event date has passed, or
-      2. capacity has been reached
-  - attendee count remains live for upcoming event
-  - archive remains manual/static for historical integrity
+  This client script handles only the live "upcoming session" card and its
+  RSVP, which reads a published Google Sheet CSV. To post the next session,
+  set upcoming.scheduled = true and fill in the fields below, including a
+  fresh eventKey + its matching prefilled rsvpUrl.
 
-  REQUIRED GOOGLE FORM FIELDS
-  ---------------------------
-    eventKey
-    Email
-    Name
-    No. of attendees
-    Questions/Notes
-
-  REQUIRED SHEET HEADERS
-  ----------------------
-    Timestamp,eventKey,Email,Name,No. of attendees,Questions/Notes
+  REQUIRED GOOGLE FORM FIELDS: eventKey, Email, Name, No. of attendees, Questions/Notes
+  REQUIRED SHEET HEADERS: Timestamp,eventKey,Email,Name,No. of attendees,Questions/Notes
 */
 
 const RSVP_SHEET = {
   enabled: true,
   csvUrl:
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQL1gI6WH9-h_AELPF048JlZ9QfO9sYFvp57TTMqPhH-yOiVy5R3dfhTqkrnScb4uSk4LtIBpwzZeyy/pub?gid=1163879655&single=true&output=csv",
-
-columns: {
-  eventKey: "eventKey",
-  email: "Email",
-  name: "Name",
-  attendeeCount: "No. of attendees",
-  notes: "Questions/Notes"
-},
-
+  columns: {
+    eventKey: "eventKey",
+    email: "Email",
+    name: "Name",
+    attendeeCount: "No. of attendees",
+    notes: "Questions/Notes"
+  },
   attendeeDisplayMode: "count"
 };
 
 const LODGE_DATA = {
-  seriesTitle: "Lodge of Zion Proceedings",
-  registerStatus: "Active",
-
   upcoming: {
-    // To post the next session: set scheduled:true and update the fields below,
-    // including a fresh eventKey + its matching prefilled rsvpUrl.
+    // Set scheduled:true and update the fields below to post the next session.
     scheduled: false,
     title: "Session II — Kings, Queens, and the Soul",
     date: "2026-05-16",
@@ -58,47 +39,9 @@ const LODGE_DATA = {
     topic:
       "What remains necessary in inherited religious order once one has discovered more organic modes of being?",
     reading: "Suggested Reading: Iron John by Robert Bly",
-
-    /*
-      Set capacity to a number to enable capacity display.
-      Set capacity to null to disable it.
-    */
     capacity: null,
-
-    /*
-      Replace this with the PREFILLED Google Form URL for THIS event.
-      The prefilled form should already contain:
-        eventKey = ams-2026-05-16
-    */
-    rsvpUrl: "https://docs.google.com/forms/d/e/1FAIpQLScqq-wtybruOtKTV5Khf8jfltQhG_sukFfl8JNDfuBW-F02Ng/viewform?usp=pp_url&entry.1051735444=ams-2026-05-16",
-  },
-
-registerStandard: {
-  heading: "About the Lodge",
-
-  about:
-    "The Lodge of Zion is the gathering body of Dao De Zion Institute — its recurring forum for study sessions, round-tables, and recorded proceedings. It is not organized as a sequence of isolated events, but as an accumulating conversation in which each meeting inherits the weight and direction of those that came before it.",
-
-  continuity:
-    "Its founding chapter, The Holy Smoke, is the living hearth where the Lodge actually convenes: a small circle that meets to read, argue, and keep faith with the work. Accordingly the Lodge is maintained as a register rather than a feed. What occurs is not announced and forgotten, but recorded, returned to, and allowed to condition the shape of future meetings. The archive is not supplementary; it is constitutive.",
-
-  currentCycle:
-    "The present cycle of sessions is oriented toward spontaneity. Topics of interest may be submitted between gatherings as suggestions for the next conversation.",
-
-  participation:
-    "Attendance is limited and requires registration."
-},
-
-  records: [
-    {
-      date: "2026-03-28",
-      location: "Beech Residence",
-      staticAttendees: "Founding group",
-      topic: "The Paths Forward",
-      filed: "Initial gathering",
-      notes: ["First gathering was a hit. We began around 7:45–8:00. The conversation meandered from personal pleasantries and catching up with old friends, to current events, to discussions of philosophy, religion, and morality. Much laughter was had, many inspiring thoughts were shared; Andrew Beech recalled a time he came upon a group of old trees during a particular state of conscious experience, and relayed that they spoke the following wisdom to him: — You are taught by the fathers you turn to the most — which Andrew jokingly said seems like logical, basic advise, but the truth of the statement from such a profound entity had an impact on him. Some cannabis was shared, Papaya Maui."]
-    }
-  ]
+    rsvpUrl: "https://docs.google.com/forms/d/e/1FAIpQLScqq-wtybruOtKTV5Khf8jfltQhG_sukFfl8JNDfuBW-F02Ng/viewform?usp=pp_url&entry.1051735444=ams-2026-05-16"
+  }
 };
 
 function escapeHtml(value) {
@@ -110,10 +53,6 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function padNumber(value) {
-  return String(value).padStart(3, "0");
-}
-
 function formatDateLong(isoDate) {
   const date = new Date(`${isoDate}T12:00:00`);
   return new Intl.DateTimeFormat("en-US", {
@@ -123,202 +62,83 @@ function formatDateLong(isoDate) {
   }).format(date);
 }
 
-function getYearFromISO(isoDate) {
-  return Number(String(isoDate).slice(0, 4));
-}
-
-function compareISOAsc(a, b) {
-  return a.date.localeCompare(b.date);
-}
-
-function compareYearDesc(a, b) {
-  return b - a;
-}
-
-function normalizeRecords(records) {
-  const byYear = new Map();
-
-  records.forEach((record) => {
-    const normalized = {
-      ...record,
-      year: getYearFromISO(record.date)
-    };
-
-    if (!byYear.has(normalized.year)) {
-      byYear.set(normalized.year, []);
-    }
-
-    byYear.get(normalized.year).push(normalized);
-  });
-
-  const normalizedRecords = [];
-
-  Array.from(byYear.keys())
-    .sort(compareYearDesc)
-    .forEach((year) => {
-      const yearRecords = byYear.get(year).sort(compareISOAsc);
-
-      yearRecords.forEach((record, index) => {
-        normalizedRecords.push({
-          ...record,
-          recordNo: `LOZ-${year}-${padNumber(index + 1)}`
-        });
-      });
-    });
-
-  return normalizedRecords;
-}
-
-function groupRecordsByYear(records) {
-  const grouped = {};
-
-  records.forEach((record) => {
-    if (!grouped[record.year]) {
-      grouped[record.year] = [];
-    }
-    grouped[record.year].push(record);
-  });
-
-  return grouped;
-}
-
 function parseCsvLine(line) {
   const result = [];
   let current = "";
   let inQuotes = false;
-
   for (let i = 0; i < line.length; i += 1) {
     const char = line[i];
     const next = line[i + 1];
-
     if (char === '"') {
-      if (inQuotes && next === '"') {
-        current += '"';
-        i += 1;
-      } else {
-        inQuotes = !inQuotes;
-      }
+      if (inQuotes && next === '"') { current += '"'; i += 1; }
+      else { inQuotes = !inQuotes; }
     } else if (char === "," && !inQuotes) {
-      result.push(current);
-      current = "";
-    } else {
-      current += char;
-    }
+      result.push(current); current = "";
+    } else { current += char; }
   }
-
   result.push(current);
   return result;
 }
 
 function parseCsv(text) {
-  const rows = [];
+  const lines = [];
   let current = "";
   let inQuotes = false;
-  const lines = [];
-
   for (let i = 0; i < text.length; i += 1) {
     const char = text[i];
     const next = text[i + 1];
-
     if (char === '"') {
-      if (inQuotes && next === '"') {
-        current += '"';
-        i += 1;
-      } else {
-        inQuotes = !inQuotes;
-      }
+      if (inQuotes && next === '"') { current += '"'; i += 1; }
+      else { inQuotes = !inQuotes; }
     } else if ((char === "\n" || char === "\r") && !inQuotes) {
-      if (current.trim() !== "") {
-        lines.push(current);
-      }
+      if (current.trim() !== "") lines.push(current);
       current = "";
-
-      if (char === "\r" && next === "\n") {
-        i += 1;
-      }
-    } else {
-      current += char;
-    }
+      if (char === "\r" && next === "\n") i += 1;
+    } else { current += char; }
   }
-
-  if (current.trim() !== "") {
-    lines.push(current);
-  }
-
-  if (!lines.length) return rows;
-
-  const headers = parseCsvLine(lines[0]).map((header) => header.trim());
-
+  if (current.trim() !== "") lines.push(current);
+  if (!lines.length) return [];
+  const headers = parseCsvLine(lines[0]).map((h) => h.trim());
+  const rows = [];
   for (let i = 1; i < lines.length; i += 1) {
     const values = parseCsvLine(lines[i]);
     const row = {};
-
-    headers.forEach((header, index) => {
-      row[header] = (values[index] || "").trim();
-    });
-
+    headers.forEach((header, index) => { row[header] = (values[index] || "").trim(); });
     rows.push(row);
   }
-
   return rows;
 }
 
 function toPositiveInt(value) {
-  const numeric = parseInt(String(value || "").trim(), 10);
-  if (Number.isNaN(numeric) || numeric < 1) return 0;
-  return numeric;
+  const n = parseInt(String(value || "").trim(), 10);
+  return Number.isNaN(n) || n < 1 ? 0 : n;
 }
 
 function titleCaseName(name) {
-  return String(name || "")
-    .trim()
-    .replace(/\s+/g, " ")
-    .split(" ")
-    .map((part) => {
-      if (!part) return part;
-      return part.charAt(0).toUpperCase() + part.slice(1);
-    })
-    .join(" ");
+  return String(name || "").trim().replace(/\s+/g, " ").split(" ")
+    .map((part) => (part ? part.charAt(0).toUpperCase() + part.slice(1) : part)).join(" ");
 }
 
 function uniqueNames(names) {
   const seen = new Set();
   const result = [];
-
   names.forEach((name) => {
     const key = name.toLowerCase();
-    if (!seen.has(key)) {
-      seen.add(key);
-      result.push(name);
-    }
+    if (!seen.has(key)) { seen.add(key); result.push(name); }
   });
-
   return result;
 }
 
 function isEventPast(dateStr) {
-  const now = new Date();
-  const eventDate = new Date(`${dateStr}T23:59:59`);
-  return now > eventDate;
+  return new Date() > new Date(`${dateStr}T23:59:59`);
 }
 
 async function fetchSheetRows() {
-  if (!RSVP_SHEET.enabled || !RSVP_SHEET.csvUrl) {
-    return [];
-  }
-
+  if (!RSVP_SHEET.enabled || !RSVP_SHEET.csvUrl) return [];
   try {
-    const response = await fetch(RSVP_SHEET.csvUrl, {
-      method: "GET",
-      cache: "no-store"
-    });
-
-    if (!response.ok) {
-      throw new Error(`Sheet request failed with ${response.status}`);
-    }
-
-    const csvText = await response.text();
-    return parseCsv(csvText);
+    const response = await fetch(RSVP_SHEET.csvUrl, { method: "GET", cache: "no-store" });
+    if (!response.ok) throw new Error(`Sheet request failed with ${response.status}`);
+    return parseCsv(await response.text());
   } catch (error) {
     console.error("Lodge RSVP sheet fetch failed:", error);
     return [];
@@ -327,338 +147,119 @@ async function fetchSheetRows() {
 
 function filterRowsForUpcomingEvent(rows) {
   if (!LODGE_DATA.upcoming || LODGE_DATA.upcoming.scheduled === false) return [];
-  const eventKeyColumn = RSVP_SHEET.columns.eventKey;
   const currentEventKey = String(LODGE_DATA.upcoming.eventKey || "").trim();
-
   if (!currentEventKey) return [];
-
-  return rows.filter((row) => {
-    return String(row[eventKeyColumn] || "").trim() === currentEventKey;
-  });
+  return rows.filter((row) => String(row[RSVP_SHEET.columns.eventKey] || "").trim() === currentEventKey);
 }
 
 function summarizeUpcomingRows(rows) {
-  const nameColumn = RSVP_SHEET.columns.name;
-  const attendeeCountColumn = RSVP_SHEET.columns.attendeeCount;
-
   const names = [];
   let totalAttendees = 0;
-
   rows.forEach((row) => {
-    const rawName = row[nameColumn];
-    const rawCount = row[attendeeCountColumn];
-
-    const name = titleCaseName(rawName || "");
-    const attendeeCount = toPositiveInt(rawCount);
-
-    if (name) {
-      names.push(name);
-    }
-
-    totalAttendees += attendeeCount;
+    const name = titleCaseName(row[RSVP_SHEET.columns.name] || "");
+    if (name) names.push(name);
+    totalAttendees += toPositiveInt(row[RSVP_SHEET.columns.attendeeCount]);
   });
-
-  return {
-    names: uniqueNames(names).sort((a, b) => a.localeCompare(b)),
-    totalAttendees
-  };
+  return { names: uniqueNames(names).sort((a, b) => a.localeCompare(b)), totalAttendees };
 }
 
 function formatUpcomingAttendeeDisplay(summary) {
   if (RSVP_SHEET.attendeeDisplayMode === "names") {
-    if (!summary.names.length) return "No registrations yet.";
-    return summary.names.join(", ");
+    return summary.names.length ? summary.names.join(", ") : "No registrations yet.";
   }
-
   if (!summary.totalAttendees) return "No registrations yet.";
-  if (summary.totalAttendees === 1) return "1 registered";
-
-  return `${summary.totalAttendees} registered`;
+  return summary.totalAttendees === 1 ? "1 registered" : `${summary.totalAttendees} registered`;
 }
 
 function getCapacityState(summary) {
   const capacity = LODGE_DATA.upcoming.capacity;
-
   if (capacity == null || Number.isNaN(Number(capacity)) || Number(capacity) < 1) {
-    return {
-      enabled: false,
-      capacity: null,
-      total: summary.totalAttendees,
-      remaining: null,
-      isFull: false,
-      display: null
-    };
+    return { enabled: false, isFull: false, display: null, remaining: null, capacity: null };
   }
-
   const safeCapacity = Number(capacity);
   const total = summary.totalAttendees;
   const remaining = Math.max(safeCapacity - total, 0);
   const isFull = total >= safeCapacity;
-
-  let display = `${total} / ${safeCapacity} registered`;
-
-  if (isFull) {
-    display = `${safeCapacity} / ${safeCapacity} registered · Full`;
-  }
-
   return {
     enabled: true,
     capacity: safeCapacity,
-    total,
-    remaining,
     isFull,
-    display
+    remaining,
+    display: isFull ? `${safeCapacity} / ${safeCapacity} registered · Full` : `${total} / ${safeCapacity} registered`
   };
 }
 
-function getSeatStatusText(capacityState) {
-  if (!capacityState.enabled) return null;
-  if (capacityState.isFull) return "Capacity reached.";
-
-  if (capacityState.remaining === 1) {
-    return "1 seat remaining.";
-  }
-
-  return `${capacityState.remaining} seats remaining.`;
+function getSeatStatusText(state) {
+  if (!state.enabled) return null;
+  if (state.isFull) return "Capacity reached.";
+  return state.remaining === 1 ? "1 seat remaining." : `${state.remaining} seats remaining.`;
 }
 
-function buildUpcomingCard(upcomingSummary) {
+function buildDormantCard(el) {
+  el.innerHTML = `
+    <article class="card event-card ink-card">
+      <p class="eyebrow">Upcoming</p>
+      <h2>No session currently scheduled</h2>
+      <div class="archive-notes">
+        <p>The Lodge gathers as the season and the company allow. When the next session is set, it will be posted here and entered into the register.</p>
+      </div>
+    </article>
+  `;
+}
+
+function buildUpcomingCard(summary) {
   const upcoming = LODGE_DATA.upcoming;
-  const upcomingEl = document.querySelector("[data-lodge-upcoming]");
-  if (!upcomingEl) return;
+  const el = document.querySelector("[data-lodge-upcoming]");
+  if (!el) return;
 
   if (!upcoming || upcoming.scheduled === false) {
-    upcomingEl.innerHTML = `
-      <article class="card event-card ink-card">
-        <p class="eyebrow">Upcoming</p>
-        <h2>No session currently scheduled</h2>
-        <div class="archive-notes">
-          <p>The Lodge gathers as the season and the company allow. When the next session is set, it will be posted here and entered into the register below.</p>
-        </div>
-      </article>
-    `;
+    buildDormantCard(el);
     return;
   }
 
   const past = isEventPast(upcoming.date);
-  const capacityState = getCapacityState(upcomingSummary);
-  const closedByCapacity = capacityState.isFull;
-  const closed = past || closedByCapacity;
-
-  const attendeeText = capacityState.enabled
-    ? capacityState.display
-    : formatUpcomingAttendeeDisplay(upcomingSummary);
-
+  const capacityState = getCapacityState(summary);
+  const closed = past || capacityState.isFull;
+  const attendeeText = capacityState.enabled ? capacityState.display : formatUpcomingAttendeeDisplay(summary);
   const seatStatusText = getSeatStatusText(capacityState);
-
   const hasRealRsvp = upcoming.rsvpUrl && upcoming.rsvpUrl !== "#";
   const rsvpAttrs = !closed && hasRealRsvp
     ? `href="${escapeHtml(upcoming.rsvpUrl)}" target="_blank" rel="noopener noreferrer"`
     : `href="#" aria-disabled="true" style="opacity:0.55;pointer-events:none;"`;
+  const statusText = past ? "Closed" : capacityState.isFull ? "Full" : "Open";
 
-  let statusText = "Open";
-  if (past) {
-    statusText = "Closed";
-  } else if (closedByCapacity) {
-    statusText = "Full";
-  }
-
-  upcomingEl.innerHTML = `
+  el.innerHTML = `
     <article class="card event-card ink-card">
       <p class="eyebrow">Upcoming</p>
       <h2>${escapeHtml(upcoming.title)}</h2>
-
       <dl class="archive-ledger">
-        <div class="archive-ledger-row">
-          <dt>Date</dt>
-          <dd>${escapeHtml(formatDateLong(upcoming.date))}</dd>
-        </div>
-        <div class="archive-ledger-row">
-          <dt>Location</dt>
-          <dd>${escapeHtml(upcoming.location)}</dd>
-        </div>
-        <div class="archive-ledger-row">
-          <dt>Format</dt>
-          <dd>${escapeHtml(upcoming.format)}</dd>
-        </div>
-        <div class="archive-ledger-row">
-          <dt>Topic</dt>
-          <dd>${escapeHtml(upcoming.topic)}</dd>
-        </div>
-        <div class="archive-ledger-row">
-          <dt>Suggested Reading</dt>
-          <dd>${escapeHtml(upcoming.reading)}</dd>
-        </div>
-        <div class="archive-ledger-row">
-          <dt>Attendees</dt>
-          <dd>${escapeHtml(attendeeText)}</dd>
-        </div>
-        ${
-          capacityState.enabled
-            ? `
-        <div class="archive-ledger-row">
-          <dt>Capacity</dt>
-          <dd>${escapeHtml(
-            seatStatusText || `${capacityState.capacity} seats available.`
-          )}</dd>
-        </div>
-        `
-            : ""
-        }
-        <div class="archive-ledger-row">
-          <dt>Status</dt>
-          <dd>${escapeHtml(statusText)}</dd>
-        </div>
+        <div class="archive-ledger-row"><dt>Date</dt><dd>${escapeHtml(formatDateLong(upcoming.date))}</dd></div>
+        <div class="archive-ledger-row"><dt>Location</dt><dd>${escapeHtml(upcoming.location)}</dd></div>
+        <div class="archive-ledger-row"><dt>Format</dt><dd>${escapeHtml(upcoming.format)}</dd></div>
+        <div class="archive-ledger-row"><dt>Topic</dt><dd>${escapeHtml(upcoming.topic)}</dd></div>
+        <div class="archive-ledger-row"><dt>Suggested Reading</dt><dd>${escapeHtml(upcoming.reading)}</dd></div>
+        <div class="archive-ledger-row"><dt>Attendees</dt><dd>${escapeHtml(attendeeText)}</dd></div>
+        ${capacityState.enabled ? `<div class="archive-ledger-row"><dt>Capacity</dt><dd>${escapeHtml(seatStatusText || "")}</dd></div>` : ""}
+        <div class="archive-ledger-row"><dt>Status</dt><dd>${escapeHtml(statusText)}</dd></div>
       </dl>
-
       <div class="button-row">
-        <a class="button" ${rsvpAttrs}>
-          ${
-            past
-              ? "RSVP Closed"
-              : closedByCapacity
-              ? "Event Full"
-              : "RSVP"
-          }
-        </a>
+        <a class="button" ${rsvpAttrs}>${past ? "RSVP Closed" : capacityState.isFull ? "Event Full" : "RSVP"}</a>
       </div>
     </article>
   `;
 }
 
-function buildRegisterStandardCard() {
-  const standard = LODGE_DATA.registerStandard;
-  const standardEl = document.querySelector("[data-lodge-standard]");
-  if (!standardEl) return;
-
-  standardEl.innerHTML = `
-    <article class="card event-card record-standard-card ink-card">
-      <p class="eyebrow">${escapeHtml(standard.heading)}</p>
-
-      <div class="archive-notes archive-notes-recorded">
-        <p>${escapeHtml(standard.about)}</p>
-        <p>${escapeHtml(standard.continuity)}</p>
-        <p>${escapeHtml(standard.currentCycle)}</p>
-        <p>${escapeHtml(standard.participation)}</p>
-      </div>
-    </article>
-  `;
-}
-
-function buildRegisterIndex(records) {
-  const indexEl = document.querySelector("[data-lodge-register-index]");
-  if (!indexEl) return;
-
-  const years = Array.from(new Set(records.map((record) => record.year))).sort(compareYearDesc);
-  const currentYear = years[0] || getYearFromISO(LODGE_DATA.upcoming.date);
-
-  indexEl.innerHTML = `
-    <div class="register-index card ink-card">
-      <p class="eyebrow">Index</p>
-      <div class="register-index-grid">
-        <p><strong>Series</strong><span>${escapeHtml(LODGE_DATA.seriesTitle)}</span></p>
-        <p><strong>Current year</strong><span>${escapeHtml(currentYear)}</span></p>
-        <p><strong>Records entered</strong><span>${escapeHtml(records.length)}</span></p>
-        <p><strong>Status</strong><span>${escapeHtml(LODGE_DATA.registerStatus)}</span></p>
-      </div>
-    </div>
-  `;
-}
-
-function buildYearNav(groupedRecords) {
-  const yearNavEl = document.querySelector("[data-lodge-year-nav]");
-  if (!yearNavEl) return;
-
-  const years = Object.keys(groupedRecords)
-    .map(Number)
-    .sort(compareYearDesc);
-
-  if (!years.length) {
-    yearNavEl.innerHTML = "";
+async function renderLodgeUpcoming() {
+  const el = document.querySelector("[data-lodge-upcoming]");
+  if (!el) return;
+  // Dormant state needs no network; only fetch the sheet for a live event.
+  if (!LODGE_DATA.upcoming || LODGE_DATA.upcoming.scheduled === false) {
+    buildUpcomingCard({ names: [], totalAttendees: 0 });
     return;
   }
-
-  yearNavEl.innerHTML = `
-    <div class="register-index card ink-card" style="margin-bottom: 1rem;">
-      <p class="eyebrow">Years</p>
-      <div class="button-row" style="padding-top: 0;">
-        ${years
-          .map(
-            (year) =>
-              `<a class="button" href="#lodge-year-${year}" style="margin-right: 0.55rem; margin-bottom: 0.55rem;">${year}</a>`
-          )
-          .join("")}
-      </div>
-    </div>
-  `;
-}
-
-function buildRegisterYears(groupedRecords) {
-  const yearsEl = document.querySelector("[data-lodge-register-years]");
-  if (!yearsEl) return;
-
-  const years = Object.keys(groupedRecords)
-    .map(Number)
-    .sort(compareYearDesc);
-
-  yearsEl.innerHTML = years
-    .map((year) => {
-      const entries = groupedRecords[year]
-        .sort(compareISOAsc)
-        .map((record) => {
-          const notesHtml = record.notes
-            .map((note) => `<p>${escapeHtml(note)}</p>`)
-            .join("");
-
-          return `
-            <article class="archive-entry recorded-entry ink-card">
-              <div class="archive-meta archive-meta-formal">
-                <p><strong>Record no.</strong><span>${escapeHtml(record.recordNo)}</span></p>
-                <p><strong>Date</strong><span>${escapeHtml(formatDateLong(record.date))}</span></p>
-                <p><strong>Location</strong><span>${escapeHtml(record.location)}</span></p>
-                <p><strong>Attendees</strong><span>${escapeHtml(record.staticAttendees || "Not recorded")}</span></p>
-                <p><strong>Topic</strong><span>${escapeHtml(record.topic)}</span></p>
-                <p><strong>Filed</strong><span>${escapeHtml(record.filed)}</span></p>
-              </div>
-
-              <div class="archive-notes archive-notes-recorded">
-                <div class="record-heading">
-                  <p class="record-type">Proceedings</p>
-                  <h3>Minutes / Notes</h3>
-                </div>
-                ${notesHtml}
-              </div>
-            </article>
-          `;
-        })
-        .join("");
-
-      return `
-        <section class="archive-year" id="lodge-year-${year}">
-          <div class="archive-year-heading">
-            <p class="archive-year-label">Register Year</p>
-            <h3>${escapeHtml(year)}</h3>
-          </div>
-          ${entries}
-        </section>
-      `;
-    })
-    .join("");
-}
-
-async function renderLodgeRegister() {
-  const normalizedRecords = normalizeRecords(LODGE_DATA.records);
-  const groupedRecords = groupRecordsByYear(normalizedRecords);
-
   const rows = await fetchSheetRows();
-  const filteredRows = filterRowsForUpcomingEvent(rows);
-  const upcomingSummary = summarizeUpcomingRows(filteredRows);
-
-  buildUpcomingCard(upcomingSummary);
-  buildRegisterStandardCard();
-  buildRegisterIndex(normalizedRecords);
-  buildYearNav(groupedRecords);
-  buildRegisterYears(groupedRecords);
+  const summary = summarizeUpcomingRows(filterRowsForUpcomingEvent(rows));
+  buildUpcomingCard(summary);
 }
 
-document.addEventListener("DOMContentLoaded", renderLodgeRegister);
+document.addEventListener("DOMContentLoaded", renderLodgeUpcoming);

@@ -1,5 +1,46 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { getCollection, render } from 'astro:content'
+
+// Build the meeting register from the `sessions` collection. Records are
+// numbered LOZ-{year}-{NNN} within each year (ascending by date); years are
+// shown most-recent first.
+const all = await getCollection('sessions')
+const sorted = [...all].sort((a, b) => a.data.date.localeCompare(b.data.date))
+
+const byYear = new Map<number, typeof sorted>()
+for (const entry of sorted) {
+  const year = Number(entry.data.date.slice(0, 4))
+  if (!byYear.has(year)) byYear.set(year, [])
+  byYear.get(year)!.push(entry)
+}
+
+const years = [...byYear.keys()].sort((a, b) => b - a)
+const pad3 = (n: number) => String(n).padStart(3, '0')
+const formatDate = (iso: string) =>
+  new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(
+    new Date(`${iso}T12:00:00`),
+  )
+
+const yearGroups = []
+for (const year of years) {
+  const entries = byYear.get(year)!
+  const rendered = []
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i]
+    const { Content } = await render(entry)
+    rendered.push({
+      entry,
+      Content,
+      recordNo: `LOZ-${year}-${pad3(i + 1)}`,
+      dateLong: formatDate(entry.data.date),
+    })
+  }
+  yearGroups.push({ year, rendered })
+}
+
+const totalRecords = sorted.length
+const currentYear = years[0] ?? new Date().getFullYear()
 ---
 <BaseLayout
   title="Lodge of Zion"
@@ -38,7 +79,25 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 
   <section class="split-section">
     <div data-lodge-upcoming></div>
-    <div data-lodge-standard></div>
+
+    <article class="card event-card record-standard-card ink-card">
+      <p class="eyebrow">About the Lodge</p>
+      <div class="archive-notes archive-notes-recorded">
+        <p>
+          The Lodge of Zion is the gathering body of Dao De Zion Institute — its recurring
+          forum for study sessions, round-tables, and recorded proceedings. It is not a
+          sequence of isolated events, but an accumulating conversation in which each
+          meeting inherits the weight and direction of those that came before it.
+        </p>
+        <p>
+          Its founding chapter, The Holy Smoke, is the living hearth where the Lodge
+          actually convenes. Accordingly the Lodge is maintained as a register rather than a
+          feed: what occurs is recorded, returned to, and allowed to condition the shape of
+          future meetings. The archive is not supplementary; it is constitutive.
+        </p>
+        <p>Attendance is limited and requires registration.</p>
+      </div>
+    </article>
   </section>
 
   <section class="archive-section">
@@ -47,9 +106,54 @@ import BaseLayout from '../layouts/BaseLayout.astro'
       <p>Archive · Record of Proceedings</p>
     </div>
 
-    <div data-lodge-register-index></div>
-    <div data-lodge-year-nav></div>
-    <div data-lodge-register-years></div>
+    <div class="register-index card ink-card">
+      <p class="eyebrow">Index</p>
+      <div class="register-index-grid">
+        <p><strong>Series</strong><span>Lodge of Zion Proceedings</span></p>
+        <p><strong>Current year</strong><span>{currentYear}</span></p>
+        <p><strong>Records entered</strong><span>{totalRecords}</span></p>
+        <p><strong>Status</strong><span>Active</span></p>
+      </div>
+    </div>
+
+    {years.length > 1 && (
+      <div class="register-index card ink-card" style="margin-bottom: 1rem;">
+        <p class="eyebrow">Years</p>
+        <div class="button-row" style="padding-top: 0;">
+          {years.map((y) => (
+            <a class="button" href={`#lodge-year-${y}`} style="margin-right: 0.55rem; margin-bottom: 0.55rem;">{y}</a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {yearGroups.map(({ year, rendered }) => (
+      <section class="archive-year" id={`lodge-year-${year}`}>
+        <div class="archive-year-heading">
+          <p class="archive-year-label">Register Year</p>
+          <h3>{year}</h3>
+        </div>
+        {rendered.map(({ entry, Content, recordNo, dateLong }) => (
+          <article class="archive-entry recorded-entry ink-card">
+            <div class="archive-meta archive-meta-formal">
+              <p><strong>Record no.</strong><span>{recordNo}</span></p>
+              <p><strong>Date</strong><span>{dateLong}</span></p>
+              <p><strong>Location</strong><span>{entry.data.location}</span></p>
+              <p><strong>Attendees</strong><span>{entry.data.attendees}</span></p>
+              <p><strong>Topic</strong><span>{entry.data.topic}</span></p>
+              <p><strong>Filed</strong><span>{entry.data.filed}</span></p>
+            </div>
+            <div class="archive-notes archive-notes-recorded">
+              <div class="record-heading">
+                <p class="record-type">Proceedings</p>
+                <h3>Minutes / Notes</h3>
+              </div>
+              <Content />
+            </div>
+          </article>
+        ))}
+      </section>
+    ))}
   </section>
 
   <script is:inline src="/lodge-register.js"></script>

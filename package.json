@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/vercel": "^8.2.11",
+    "@octokit/rest": "^21.1.1",
     "astro": "^5.1.0"
   },
   "devDependencies": {
