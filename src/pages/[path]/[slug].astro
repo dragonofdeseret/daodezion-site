@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { paths } from '../../data/paths.js'
+
+export function getStaticPaths() {
+  const routes = []
+  for (const key of Object.keys(paths)) {
+    const p = paths[key]
+    for (const book of [...p.core, ...p.further]) {
+      routes.push({ params: { path: p.slug, slug: book.slug }, props: { book, path: p } })
+    }
+  }
+  return routes
+}
+
+const { book, path } = Astro.props
+const pathName = (slug) => (paths[slug] ? paths[slug].name : slug)
+---
+<BaseLayout
+  title={`${book.title} | ${path.name}`}
+  description={book.why}
+  active="library"
+  sub={path.slug}
+  bodyClass="library-active"
+>
+  <article class="leaf">
+    <p class="eyebrow">
+      <a class="leaf-back" href={`/${path.slug}`}>{path.name} · {path.subtitle}</a>
+    </p>
+
+    {book.epithet && <p class="leaf-epithet">{book.epithet}</p>}
+    <h1>{book.title}</h1>
+    <p class="leaf-note">{book.note}</p>
+
+    {book.quote && (
+      <blockquote class="leaf-quote">
+        <p>{book.quote.text}</p>
+        {book.quote.cite && <cite>— {book.quote.cite}</cite>}
+      </blockquote>
+    )}
+
+    {book.why && (
+      <section class="leaf-section">
+        <h2>Why it belongs</h2>
+        <p>{book.why}</p>
+      </section>
+    )}
+
+    {book.echoes && book.echoes.length > 0 && (
+      <section class="leaf-section leaf-echoes">
+        <h2>Echoes across the paths</h2>
+        <p class="leaf-echoes-intro">
+          The same structure, carried in other images—one tradition's metaphor mapping onto another's.
+        </p>
+        <ul>
+          {book.echoes.map((e) => (
+            <li>
+              <a href={`/${e.path}/${e.slug}`}>
+                <span class="echo-head">
+                  <span class="echo-path">{pathName(e.path)}</span>
+                  <span class="echo-title">{e.title}</span>
+                </span>
+                <span class="echo-note">{e.note}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {book.href && (
+      <div class="button-row">
+        <a class="button" href={book.href} target="_blank" rel="noopener noreferrer">Acquire &amp; Read</a>
+      </div>
+    )}
+  </article>
+</BaseLayout>

@@ -2,12 +2,14 @@
 // Renders a single path page (Dao / De / Zion) from a path object in
 // src/data/paths.js. Used by the three path pages so they stay in sync.
 interface Book {
+  slug: string
   title: string
   note: string
   href: string
   why?: string
 }
 interface Path {
+  slug: string
   name: string
   subtitle: string
   glyph: string
@@ -44,11 +46,7 @@ const { path } = Astro.props
     <div class="book-grid">
       {path.core.map((book) => (
         <div class="book-item">
-          {book.href ? (
-            <a href={book.href} class="book-link book-link-primary">{book.title}</a>
-          ) : (
-            <span class="book-link book-link-primary">{book.title}</span>
-          )}
+          <a href={`/${path.slug}/${book.slug}`} class="book-link book-link-primary">{book.title}</a>
           <p class="book-note">{book.note}</p>
           {book.why && (
             <details class="book-why">
@@ -66,11 +64,7 @@ const { path } = Astro.props
     <div class="book-grid">
       {path.further.map((book) => (
         <div class="book-item">
-          {book.href ? (
-            <a href={book.href} class="book-link book-link-secondary">{book.title}</a>
-          ) : (
-            <span class="book-link book-link-secondary">{book.title}</span>
-          )}
+          <a href={`/${path.slug}/${book.slug}`} class="book-link book-link-secondary">{book.title}</a>
           <p class="book-note">{book.note}</p>
           {book.why && (
             <details class="book-why">
