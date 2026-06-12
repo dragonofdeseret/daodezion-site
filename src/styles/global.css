@@ -1452,10 +1452,16 @@ h3 {
    21. DRAKOSOPHIA — THE HIDDEN DOOR
 ========================================= */
 body.drako {
-  background:
-    radial-gradient(circle at 50% 30%, rgba(123, 35, 24, 0.22), transparent 42%),
-    radial-gradient(circle at 50% 120%, rgba(201, 149, 59, 0.10), transparent 50%),
-    linear-gradient(180deg, #0a0706 0%, #120b09 100%);
+  /* dragon-scale (seigaiha) ground: gold scales on near-black, oxblood + gold glow */
+  --scale: rgba(179, 133, 47, 0.15);
+  background-color: #0b0807;
+  background-image:
+    radial-gradient(ellipse at 50% -10%, rgba(163, 49, 29, 0.26), transparent 55%),
+    radial-gradient(ellipse at 50% 116%, rgba(179, 133, 47, 0.12), transparent 55%),
+    radial-gradient(circle at 100% 150%, #0b0807 24%, var(--scale) 25%, var(--scale) 28%, #0b0807 29%, #0b0807 36%, var(--scale) 37%, var(--scale) 40%, #0b0807 41%, #0b0807 49%, var(--scale) 50%, var(--scale) 53%, #0b0807 54%),
+    radial-gradient(circle at 0 150%, #0b0807 24%, var(--scale) 25%, var(--scale) 28%, #0b0807 29%, #0b0807 36%, var(--scale) 37%, var(--scale) 40%, #0b0807 41%, #0b0807 49%, var(--scale) 50%, var(--scale) 53%, #0b0807 54%);
+  background-size: 100% 100%, 100% 100%, 120px 60px, 120px 60px;
+  background-attachment: fixed;
   color: #d9c7ad;
 }
 
@@ -1466,10 +1472,9 @@ body.drako::before { display: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  padding: 3rem 1.5rem;
-  width: min(calc(100% - 2rem), 620px);
+  padding: clamp(3.5rem, 10vh, 7rem) 1.5rem 5rem;
+  width: min(calc(100% - 2rem), 760px);
   margin: 0 auto;
 }
 
@@ -1516,7 +1521,7 @@ body.drako::before { display: none; }
   border-radius: 999px;
   padding: 0.7rem 1.1rem;
   color: #ecd9bd;
-  font: 400 0.95rem "Libre Baskerville", serif;
+  font: 400 0.98rem var(--font-body);
   letter-spacing: 0.04em;
 }
 
@@ -1555,6 +1560,126 @@ body.drako::before { display: none; }
   color: rgba(217, 199, 173, 0.45);
 }
 .drako-back:hover { color: var(--gold); }
+
+/* --- the inner chamber (revealed past the gate) --- */
+.drako-inner {
+  width: 100%;
+  text-align: left;
+  margin-top: 0.5rem;
+}
+
+.drako-inner .ornament {
+  max-width: 280px;
+  margin: 0 auto 2.2rem;
+}
+
+.drako-inner .ornament::before,
+.drako-inner .ornament::after {
+  background: linear-gradient(90deg, transparent, rgba(179, 133, 47, 0.4) 50%, transparent);
+}
+
+.drako-chamber-intro {
+  text-align: center;
+  color: #c7b291;
+  font-style: italic;
+  max-width: 52ch;
+  margin: 0 auto 2.6rem;
+  line-height: 1.8;
+}
+
+.drako-chamber-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: #d9b25f;
+  font-size: 1.08rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 2.6rem 0 1.5rem;
+}
+
+.drako-lights {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.drako-light {
+  text-align: center;
+  padding: 1.7rem 1rem 1.5rem;
+  border: 1px solid rgba(179, 133, 47, 0.3);
+  border-radius: 2px;
+  background:
+    radial-gradient(circle at 50% -5%, rgba(86, 21, 14, 0.55), transparent 70%),
+    linear-gradient(180deg, rgba(22, 13, 11, 0.66), rgba(10, 7, 6, 0.66));
+}
+
+.drako-light .gem {
+  display: block;
+  width: 13px;
+  height: 13px;
+  margin: 0 auto 1rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 28%, #ffffff, #efe6d6 55%, #b9a98c);
+  box-shadow: 0 0 12px rgba(243, 236, 224, 0.55);
+}
+
+.drako-light .light-glyph {
+  display: block;
+  font-family: "Songti SC", "STSong", "Noto Serif SC", serif;
+  font-size: 1.55rem;
+  line-height: 1;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+
+.drako-light h3 {
+  color: #f3ece0;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+
+.drako-light p {
+  color: #b6a384;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.drako-mysteries {
+  list-style: none;
+  padding: 0;
+  max-width: 52ch;
+  margin: 0 auto;
+}
+
+.drako-mysteries li {
+  position: relative;
+  padding: 0.75rem 0 0.75rem 1.7rem;
+  border-bottom: 1px solid rgba(179, 133, 47, 0.16);
+  color: #cdb997;
+}
+
+.drako-mysteries li:last-child { border-bottom: 0; }
+
+.drako-mysteries li::before {
+  content: "❖";
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  color: var(--gold-dim);
+  font-size: 0.68rem;
+}
+
+.drako-mysteries em {
+  color: #8a7a60;
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .drako-lights { grid-template-columns: 1fr; }
+}
 
 /* =========================================
    22. SANCAI GLYPH TITLES (天 / 人 / 地)

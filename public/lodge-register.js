@@ -47,6 +47,9 @@ const LODGE_DATA = {
   registerStatus: "Active",
 
   upcoming: {
+    // To post the next session: set scheduled:true and update the fields below,
+    // including a fresh eventKey + its matching prefilled rsvpUrl.
+    scheduled: false,
     title: "Session II — Kings, Queens, and the Soul",
     date: "2026-05-16",
     eventKey: "ams-2026-05-16",
@@ -323,6 +326,7 @@ async function fetchSheetRows() {
 }
 
 function filterRowsForUpcomingEvent(rows) {
+  if (!LODGE_DATA.upcoming || LODGE_DATA.upcoming.scheduled === false) return [];
   const eventKeyColumn = RSVP_SHEET.columns.eventKey;
   const currentEventKey = String(LODGE_DATA.upcoming.eventKey || "").trim();
 
@@ -422,6 +426,19 @@ function buildUpcomingCard(upcomingSummary) {
   const upcoming = LODGE_DATA.upcoming;
   const upcomingEl = document.querySelector("[data-lodge-upcoming]");
   if (!upcomingEl) return;
+
+  if (!upcoming || upcoming.scheduled === false) {
+    upcomingEl.innerHTML = `
+      <article class="card event-card ink-card">
+        <p class="eyebrow">Upcoming</p>
+        <h2>No session currently scheduled</h2>
+        <div class="archive-notes">
+          <p>The Lodge gathers as the season and the company allow. When the next session is set, it will be posted here and entered into the register below.</p>
+        </div>
+      </article>
+    `;
+    return;
+  }
 
   const past = isEventPast(upcoming.date);
   const capacityState = getCapacityState(upcomingSummary);
