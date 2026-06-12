@@ -1723,3 +1723,53 @@ body.drako::before { display: none; }
   color: var(--line-strong);
   transform: translateY(-0.35em);
 }
+
+
+/* =========================================
+   23. PER-TEXT RATIONALE (expandable)
+========================================= */
+.book-why {
+  margin-top: 0.45rem;
+}
+
+.book-why > summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-label);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  transition: color var(--transition);
+}
+
+.book-why > summary::-webkit-details-marker { display: none; }
+
+.book-why > summary::before {
+  content: "❖";
+  font-size: 0.62rem;
+  color: var(--gold);
+  transition: transform var(--transition);
+}
+
+.book-why[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+.book-why > summary:hover {
+  color: var(--red-bright);
+}
+
+.book-why > p {
+  margin: 0.55rem 0 0.15rem;
+  padding-left: 0.95rem;
+  border-left: 1px solid rgba(118, 34, 22, 0.22);
+  color: var(--ink-soft);
+  font-size: 0.99rem;
+  line-height: 1.62;
+  font-style: italic;
+}

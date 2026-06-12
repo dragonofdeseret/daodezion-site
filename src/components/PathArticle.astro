@@ -5,6 +5,7 @@ interface Book {
   title: string
   note: string
   href: string
+  why?: string
 }
 interface Path {
   name: string
@@ -49,6 +50,12 @@ const { path } = Astro.props
             <span class="book-link book-link-primary">{book.title}</span>
           )}
           <p class="book-note">{book.note}</p>
+          {book.why && (
+            <details class="book-why">
+              <summary>Why it belongs</summary>
+              <p>{book.why}</p>
+            </details>
+          )}
         </div>
       ))}
     </div>
@@ -65,6 +72,12 @@ const { path } = Astro.props
             <span class="book-link book-link-secondary">{book.title}</span>
           )}
           <p class="book-note">{book.note}</p>
+          {book.why && (
+            <details class="book-why">
+              <summary>Why it belongs</summary>
+              <p>{book.why}</p>
+            </details>
+          )}
         </div>
       ))}
     </div>

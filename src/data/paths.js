@@ -5,8 +5,12 @@
 // Consumed by src/pages/{dao,de,zion}.astro via the PathArticle component, and
 // by src/pages/library.astro for the triad cards.
 //
-// Book `tier`: "core" → primary link style, "further" → secondary link style.
-// Leave `href` empty ("") for a title with no link yet; it renders as plain text.
+// Each book:
+//   title  — display name
+//   note   — edition / translator line
+//   href   — purchase or read link; leave "" for a title with no link (plain text)
+//   why    — one or two sentences on why this text sits in this section (optional;
+//            renders as an expandable "Why it belongs" under the entry)
 // ──────────────────────────────────────────────────────────────────────────────
 
 export const paths = {
@@ -29,16 +33,19 @@ export const paths = {
         title: 'Daodejing',
         note: 'Dao De Jing: A Philosophical Translation; Making This Life Significant. By Roger T. Ames and David L. Hall.',
         href: 'https://a.co/d/0hcmF9uO',
+        why: 'The root text of the Way—power through yielding, action through non-coercion. It teaches how to move with the grain of things rather than force the world into a shape it will not keep.',
       },
       {
         title: 'Shōbōgenzō',
         note: "Treasury of the True Dharma Eye: Zen Master Dogen's Shobo Genzo. Edited by Kazuaki Tanahashi.",
         href: 'https://a.co/d/00GRMEM6',
+        why: 'Dōgen makes practice itself the teaching. The Way is not a doctrine to hold but a manner of sitting, walking, working, and seeing—realization inseparable from the act.',
       },
       {
-        title: 'The Bhagavad Gita',
-        note: 'Introduced and Translated by Eknath Easwaran.',
-        href: 'https://a.co/d/0cu30pbG',
+        title: 'The Sermon on the Mount',
+        note: 'Matthew 5–7; and its Book of Mormon parallel, 3 Nephi 12–14.',
+        href: 'https://www.churchofjesuschrist.org/study/scriptures/bofm/3-ne/12',
+        why: "The Way in the Latter-day Saint and Christian key: 'Consider the lilies… they toil not.' A discipline of non-grasping trust—provision without anxiety, righteousness without force.",
       },
     ],
     further: [
@@ -46,16 +53,19 @@ export const paths = {
         title: 'Three Zen Sutras',
         note: 'The Heart Sutra, The Diamond Sutra, and The Platform Sutra.',
         href: 'https://a.co/d/082KhE7o',
+        why: 'On emptiness and the groundlessness that frees. They dissolve the very footing the anxious self keeps trying to stand on.',
       },
       {
         title: 'The Gateless Gate',
         note: 'All 48 koans, with commentary by Ekai, called Mumon.',
         href: 'https://a.co/d/0gmK8cVN',
+        why: 'Forty-eight koans that jam the discursive mind until it lets go. The gate is gateless because the Way was never barred—only mistaken for something to reason past.',
       },
       {
-        title: 'The Dhammapada',
-        note: 'Introduced and Translated by Eknath Easwaran.',
-        href: 'https://a.co/d/07XUdcZD',
+        title: 'The Book of Lieh-tzu',
+        note: 'A Taoist classic of spontaneity and ease. Translated by A.C. Graham (or Eva Wong).',
+        href: '',
+        why: 'Taoist tales of ease, spontaneity, and the man who forgets himself. Where the Daodejing instructs, Lieh-tzu lets the Way be overheard in story.',
       },
     ],
   },
@@ -79,21 +89,25 @@ export const paths = {
         title: 'On Having No Head',
         note: 'Zen and the Rediscovery of the Obvious, by D.E. Harding.',
         href: 'https://a.co/d/0eKr6e89',
+        why: "Harding's experiments turn the abstraction 'no-self' into something you can look and check for yourself, right now—witness before doctrine.",
       },
       {
         title: 'The Science of the 1st Person',
         note: 'Its Principles, Practice, and Potential, by D.E. Harding.',
         href: 'https://a.co/d/0c8smFXv',
+        why: "Harding's fuller method: attention turned around to face its own source. A rigorous, first-person empiricism of awareness.",
       },
       {
         title: 'The Prophet',
         note: 'by Kahlil Gibran.',
         href: 'https://a.co/d/02GWyHXJ',
+        why: 'Gibran speaks the inner life in images—love, work, grief, joy—meeting the reader where meaning is actually felt rather than argued.',
       },
       {
         title: 'The Secret of the Golden Flower',
         note: 'From the TaiShang, Taoist lineage. Translations by Thomas Cleary or Xon Leighton.',
         href: '',
+        why: 'A Taoist manual of inner light and the circulation of attention—the witness as a practice of turning the gaze inward until it shines.',
       },
     ],
     further: [
@@ -101,21 +115,13 @@ export const paths = {
         title: 'The Alan Watts Collection',
         note: 'Available via the Waking Up app.',
         href: 'https://dynamic.wakingup.com/pack/PD974C',
-      },
-      {
-        title: 'The Red Book',
-        note: 'by Carl G. Jung.',
-        href: 'https://a.co/d/08BvOOMa',
-      },
-      {
-        title: 'Man and His Symbols',
-        note: 'by Carl G. Jung.',
-        href: 'https://a.co/d/0et1mpXz',
+        why: 'Watts is the great translator of Eastern interiority for the Western ear—loosening the knot of the separate self with wit and clarity.',
       },
       {
         title: 'Iron John',
         note: 'A Book About Men, by Robert Bly.',
         href: 'https://a.co/d/0j8uGUZM',
+        why: "Bly reads a single fairy tale as the map of a man's inner initiation—symbol and story as instruments of first-person transformation.",
       },
     ],
   },
@@ -139,16 +145,25 @@ export const paths = {
         title: 'The Book of Mormon',
         note: 'The Earliest Text. Edited by Royal Skousen.',
         href: 'https://a.co/d/00X0qYd1',
+        why: "A people's covenant record—rise, forgetting, and return. Zion as a thing to be built, lost, and rebuilt across generations.",
       },
       {
         title: 'The Torah',
         note: 'The foundational text of Judaism — the Pentateuch, first five books of the Hebrew Bible.',
         href: '',
+        why: 'The founding law and narrative of a covenant people—how a wandering company becomes an order bound by memory and obligation.',
       },
       {
         title: 'The Analects of Confucius',
         note: 'A Philosophical Translation by Roger T. Ames and David L. Hall.',
         href: 'https://a.co/d/02DnWZJj',
+        why: 'Order as cultivated relation: ritual, role, and reverence as the forms through which a humane society holds together.',
+      },
+      {
+        title: 'The Complete Zhuangzi',
+        note: 'The Complete Works of Zhuangzi. Translated by Burton Watson.',
+        href: '',
+        why: 'Why on the path of Order? Because every living order needs its holy fool. Zhuangzi is the wild counter-voice within Zion—the laughter that keeps law from hardening into mere rule, and reminds the city that its forms serve life, not the reverse.',
       },
     ],
     further: [
@@ -156,16 +171,19 @@ export const paths = {
         title: 'Pearl of Great Price',
         note: 'by the Prophet Joseph Smith Jr.',
         href: 'https://a.co/d/074wnOxl',
+        why: "Latter-day scripture of cosmogony and covenant—Enoch's Zion, the city taken up, as the archetype of an order made whole.",
       },
       {
         title: 'Jesus the Christ',
         note: 'by Elder James E. Talmage.',
         href: 'https://a.co/d/00DVBcfI',
+        why: 'Talmage’s measured account of the life that, for the Latter-day Saint, founds the new covenant and the order built upon it.',
       },
       {
         title: 'Sri Chaitanya and His Associates',
         note: 'by Swami B.B. Tirtha Maharaja.',
         href: 'https://a.co/d/0jll3FCR',
+        why: 'A devotional order formed around shared ecstatic practice—community as the vessel and discipline of love.',
       },
     ],
   },
