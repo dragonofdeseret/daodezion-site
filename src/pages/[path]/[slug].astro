@@ -21,7 +21,7 @@ const pathName = (slug) => (paths[slug] ? paths[slug].name : slug)
   description={book.why}
   active="library"
   sub={path.slug}
-  bodyClass="library-active"
+  bodyClass="library-active leaf-page"
 >
   <article class="leaf">
     <p class="eyebrow">
@@ -73,5 +73,7 @@ const pathName = (slug) => (paths[slug] ? paths[slug].name : slug)
         <a class="button" href={book.href} target="_blank" rel="noopener noreferrer">Acquire &amp; Read</a>
       </div>
     )}
+
+    <div class="leaf-flourish" aria-hidden="true">❧</div>
   </article>
 </BaseLayout>

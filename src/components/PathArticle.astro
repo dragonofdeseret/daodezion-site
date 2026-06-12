@@ -48,12 +48,6 @@ const { path } = Astro.props
         <div class="book-item">
           <a href={`/${path.slug}/${book.slug}`} class="book-link book-link-primary">{book.title}</a>
           <p class="book-note">{book.note}</p>
-          {book.why && (
-            <details class="book-why">
-              <summary>Why it belongs</summary>
-              <p>{book.why}</p>
-            </details>
-          )}
         </div>
       ))}
     </div>
@@ -66,12 +60,6 @@ const { path } = Astro.props
         <div class="book-item">
           <a href={`/${path.slug}/${book.slug}`} class="book-link book-link-secondary">{book.title}</a>
           <p class="book-note">{book.note}</p>
-          {book.why && (
-            <details class="book-why">
-              <summary>Why it belongs</summary>
-              <p>{book.why}</p>
-            </details>
-          )}
         </div>
       ))}
     </div>

@@ -1890,3 +1890,82 @@ body.drako::before { display: none; }
 }
 
 .leaf .button-row { margin-top: 2.1rem; }
+
+
+/* =========================================
+   25. LEAF PAGES — organic / parchment
+========================================= */
+.leaf-page .page {
+  background:
+    url("/parchment.svg"),
+    linear-gradient(180deg, rgba(242, 229, 206, 0.99), rgba(229, 212, 184, 0.99));
+  background-size: 220px 220px, cover;
+}
+
+/* pull-quote: centered, with a gilt opening mark instead of a UI border */
+.leaf-page .leaf-quote {
+  position: relative;
+  max-width: 38rem;
+  margin: 2.3rem auto;
+  padding: 0.5rem 0 0.2rem;
+  border: 0;
+  text-align: center;
+}
+
+.leaf-page .leaf-quote::before {
+  content: "\201C";
+  display: block;
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 0.5;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 0.35rem;
+}
+
+.leaf-page .leaf-quote cite {
+  display: block;
+  margin-top: 0.8rem;
+}
+
+/* echoes: an organic marginal list, not boxes */
+.leaf-page .leaf-echoes ul { gap: 0; }
+
+.leaf-page .leaf-echoes a {
+  position: relative;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  padding: 0.75rem 0 0.75rem 1.85rem;
+  transition: color var(--transition);
+}
+
+.leaf-page .leaf-echoes li:last-child a { border-bottom: 0; }
+
+.leaf-page .leaf-echoes a::before {
+  content: "❧";
+  position: absolute;
+  left: 0.15rem;
+  top: 0.75rem;
+  color: var(--gold-dim);
+  font-size: 0.95rem;
+  transition: color var(--transition);
+}
+
+.leaf-page .leaf-echoes a:hover {
+  background: none;
+  transform: none;
+}
+
+.leaf-page .leaf-echoes a:hover::before,
+.leaf-page .leaf-echoes a:hover .echo-title { color: var(--red-bright); }
+
+/* closing flourish */
+.leaf-flourish {
+  margin: 2.7rem 0 0.3rem;
+  text-align: center;
+  color: var(--gold-dim);
+  font-size: 1.45rem;
+  opacity: 0.85;
+}
