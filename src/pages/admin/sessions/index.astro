@@ -1,0 +1,29 @@
+---
+export const prerender = false
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+import { getCollection } from 'astro:content'
+
+const sessions = (await getCollection('sessions')).sort((a, b) =>
+  b.data.date.localeCompare(a.data.date),
+)
+---
+<AdminLayout title="Sessions">
+  <div class="admin-head-row">
+    <h1>Lodge Sessions</h1>
+    <a class="button" href="/admin/sessions/new">+ New session</a>
+  </div>
+  {sessions.length === 0 ? (
+    <p class="admin-status">No sessions yet. Create the first one.</p>
+  ) : (
+    <ul class="admin-list">
+      {sessions.map((s) => (
+        <li>
+          <a href={`/admin/sessions/${s.id}`}>
+            <span class="admin-list-date">{s.data.date}</span>
+            <span class="admin-list-topic">{s.data.topic}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</AdminLayout>

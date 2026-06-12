@@ -1,0 +1,27 @@
+---
+export const prerender = false
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+import SessionForm from '../../../components/SessionForm.astro'
+import { getCollection } from 'astro:content'
+
+const { id } = Astro.params
+const sessions = await getCollection('sessions')
+const entry = sessions.find((s) => s.id === id)
+if (!entry) return Astro.redirect('/admin/sessions')
+
+const fields = {
+  slug: entry.id,
+  date: entry.data.date,
+  location: entry.data.location,
+  // "Not recorded" is the schema default for a blank attendees field — show it
+  // as empty in the editor so saving doesn't bake the placeholder in.
+  attendees: entry.data.attendees === 'Not recorded' ? '' : entry.data.attendees,
+  topic: entry.data.topic,
+  filed: entry.data.filed || '',
+  proceedings: (entry.body || '').trim(),
+}
+---
+<AdminLayout title={`Edit · ${entry.data.topic}`}>
+  <h1>Edit session</h1>
+  <SessionForm isNew={false} fields={fields} />
+</AdminLayout>

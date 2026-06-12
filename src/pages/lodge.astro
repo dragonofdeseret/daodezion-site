@@ -32,6 +32,7 @@ for (const year of years) {
     rendered.push({
       entry,
       Content,
+      hasBody: Boolean(entry.body && entry.body.trim()),
       recordNo: `LOZ-${year}-${pad3(i + 1)}`,
       dateLong: formatDate(entry.data.date),
     })
@@ -133,7 +134,7 @@ const currentYear = years[0] ?? new Date().getFullYear()
           <p class="archive-year-label">Register Year</p>
           <h3>{year}</h3>
         </div>
-        {rendered.map(({ entry, Content, recordNo, dateLong }) => (
+        {rendered.map(({ entry, Content, hasBody, recordNo, dateLong }) => (
           <article class="archive-entry recorded-entry ink-card">
             <div class="archive-meta archive-meta-formal">
               <p><strong>Record no.</strong><span>{recordNo}</span></p>
@@ -141,14 +142,14 @@ const currentYear = years[0] ?? new Date().getFullYear()
               <p><strong>Location</strong><span>{entry.data.location}</span></p>
               <p><strong>Attendees</strong><span>{entry.data.attendees}</span></p>
               <p><strong>Topic</strong><span>{entry.data.topic}</span></p>
-              <p><strong>Filed</strong><span>{entry.data.filed}</span></p>
+              {entry.data.filed && <p><strong>Filed</strong><span>{entry.data.filed}</span></p>}
             </div>
             <div class="archive-notes archive-notes-recorded">
               <div class="record-heading">
                 <p class="record-type">Proceedings</p>
                 <h3>Minutes / Notes</h3>
               </div>
-              <Content />
+              {hasBody ? <Content /> : <p><em>Proceedings to be recorded.</em></p>}
             </div>
           </article>
         ))}

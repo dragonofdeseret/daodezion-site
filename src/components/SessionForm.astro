@@ -1,0 +1,105 @@
+---
+interface Fields {
+  slug?: string
+  date: string
+  location: string
+  attendees: string
+  topic: string
+  filed: string
+  proceedings: string
+}
+interface Props {
+  isNew: boolean
+  fields?: Fields
+}
+const { isNew, fields } = Astro.props
+const f: Fields = fields ?? {
+  slug: '',
+  date: '',
+  location: '',
+  attendees: '',
+  topic: '',
+  filed: '',
+  proceedings: '',
+}
+---
+<form class="admin-form" id="session-form" data-is-new={String(isNew)} data-slug={f.slug ?? ''}>
+  <label>Date<input name="date" type="date" value={f.date} required /></label>
+  <label>Location<input name="location" type="text" value={f.location} required /></label>
+  <label>Attendees<input name="attendees" type="text" value={f.attendees} placeholder="e.g. Founding group — optional" /></label>
+  <label>Topic<input name="topic" type="text" value={f.topic} required /></label>
+  <label>Filed<input name="filed" type="text" value={f.filed} placeholder="short archival label — optional" /></label>
+  <label>Proceedings<textarea name="proceedings" rows="12" placeholder="Minutes / notes (Markdown supported)">{f.proceedings}</textarea></label>
+
+  <div class="admin-form-actions">
+    <button type="submit" class="button">Save</button>
+    {!isNew && <button type="button" class="button admin-danger" id="delete-btn">Delete</button>}
+    <a class="admin-cancel" href="/admin/sessions">Cancel</a>
+  </div>
+  <p class="admin-status" id="form-status" role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  const form = document.getElementById('session-form') as HTMLFormElement
+  const statusEl = document.getElementById('form-status') as HTMLElement
+  const isNew = form.dataset.isNew === 'true'
+  const slug = form.dataset.slug || ''
+
+  const setStatus = (msg: string) => {
+    statusEl.textContent = msg
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    setStatus('Saving…')
+    const fd = new FormData(form)
+    const payload = {
+      isNew,
+      slug,
+      date: fd.get('date'),
+      location: fd.get('location'),
+      attendees: fd.get('attendees'),
+      topic: fd.get('topic'),
+      filed: fd.get('filed'),
+      proceedings: fd.get('proceedings'),
+    }
+    try {
+      const res = await fetch('/admin/api/save', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Save failed')
+      setStatus('Saved — the site rebuilds in ~30–60s. Returning to the list…')
+      setTimeout(() => {
+        window.location.href = '/admin/sessions'
+      }, 1400)
+    } catch (err) {
+      setStatus('Error: ' + (err instanceof Error ? err.message : String(err)))
+    }
+  })
+
+  const deleteBtn = document.getElementById('delete-btn')
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', async () => {
+      if (!window.confirm('Delete this session? This commits a removal to the repo.')) return
+      setStatus('Deleting…')
+      try {
+        const res = await fetch('/admin/api/delete', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ slug }),
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Delete failed')
+        setStatus('Deleted. Returning to the list…')
+        setTimeout(() => {
+          window.location.href = '/admin/sessions'
+        }, 1200)
+      } catch (err) {
+        setStatus('Error: ' + (err instanceof Error ? err.message : String(err)))
+      }
+    })
+  }
+</script>

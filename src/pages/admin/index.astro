@@ -1,0 +1,18 @@
+---
+export const prerender = false
+import AdminLayout from '../../layouts/AdminLayout.astro'
+import { getCollection } from 'astro:content'
+
+const sessions = await getCollection('sessions')
+---
+<AdminLayout title="Dashboard">
+  <h1>Admin</h1>
+  <ul class="admin-cards">
+    <li>
+      <a href="/admin/sessions">
+        <strong>Lodge Sessions</strong>
+        <span>{sessions.length} record{sessions.length === 1 ? '' : 's'} · add &amp; edit proceedings</span>
+      </a>
+    </li>
+  </ul>
+</AdminLayout>
