@@ -40,7 +40,7 @@ interface Props {
 const {
   title,
   description = 'Dao De Zion Institute — an umbrella project for comparative theology, philosophical study, and disciplined religious reflection, organized around Dao, De, and Zion.',
-  ogImage,
+  ogImage = '/og.png',
   active,
   sub,
   bodyClass = '',
@@ -52,6 +52,7 @@ const {
 
 const fullTitle = appendSiteName ? `${title} — Dao De Zion Institute` : title
 const canonical = new URL(Astro.url.pathname, Astro.site).toString()
+const ogImageUrl = new URL(ogImage, Astro.site).toString()
 ---
 
 <!doctype html>
@@ -68,8 +69,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString()
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
