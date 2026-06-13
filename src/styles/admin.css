@@ -138,3 +138,55 @@
   color: var(--ink);
 }
 .admin-check input { width: auto; }
+
+/* Library editor extras */
+.admin-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 560px) { .admin-grid-2 { grid-template-columns: 1fr; } }
+
+.admin-section { margin-bottom: 1.6rem; }
+.admin-section h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin: 1.4rem 0 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line);
+}
+.admin-subhead {
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  color: var(--gold-dim);
+  margin: 0.9rem 0 0.45rem;
+}
+
+.admin-form select {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink);
+  background: rgba(255, 252, 246, 0.7);
+  border: 1px solid rgba(90, 41, 23, 0.3);
+  border-radius: 2px;
+  padding: 0.55rem 0.6rem;
+}
+.admin-form input[readonly] { opacity: 0.65; }
+
+.admin-preview, .admin-advanced { border: 1px solid var(--line); border-radius: 2px; padding: 0.4rem 0.7rem; }
+.admin-preview > summary, .admin-advanced > summary {
+  cursor: pointer;
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--gold-dim);
+}
+.admin-preview-body {
+  padding: 0.6rem 0.2rem 0.2rem;
+  line-height: 1.6;
+}
+.admin-preview-body p { margin: 0 0 0.6rem; }
+.admin-hint { font-size: 0.82rem; color: var(--ink-soft); margin: 0.5rem 0; }
+.admin-hint code { font-size: 0.8rem; }
+
+.button:disabled { opacity: 0.55; pointer-events: none; }

@@ -1,0 +1,41 @@
+---
+export const prerender = false
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+import LibraryForm from '../../../components/LibraryForm.astro'
+import library from '../../../data/library.json'
+
+const data: any = library
+const { id } = Astro.params
+
+let found: { path: string; tier: string; book: any } | null = null
+for (const p of data.pathOrder) {
+  for (const tier of ['core', 'further']) {
+    const book = data.paths[p][tier].find((x: any) => x.slug === id)
+    if (book) {
+      found = { path: p, tier, book }
+      break
+    }
+  }
+  if (found) break
+}
+if (!found) return Astro.redirect('/admin/library')
+
+const b = found.book
+const fields = {
+  path: found.path,
+  tier: found.tier,
+  slug: b.slug,
+  title: b.title,
+  note: b.note || '',
+  href: b.href || '',
+  epithet: b.epithet || '',
+  quoteText: b.quote?.text || '',
+  quoteCite: b.quote?.cite || '',
+  why: b.why || '',
+  echoesJson: JSON.stringify(b.echoes ?? [], null, 2),
+}
+---
+<AdminLayout title={`Edit · ${b.title}`}>
+  <h1>Edit text</h1>
+  <LibraryForm isNew={false} fields={fields} />
+</AdminLayout>

@@ -13,6 +13,17 @@ function client(): Octokit {
   return cached
 }
 
+/** Read a single file's UTF-8 contents from the repo (throws if missing). */
+export async function getFileContent(path: string): Promise<string> {
+  const { owner, repo, branch } = getGithubRepo()
+  const gh = client()
+  const res = await gh.repos.getContent({ owner, repo, path, ref: branch })
+  if (Array.isArray(res.data) || !('content' in res.data)) {
+    throw new Error(`Not a file: ${path}`)
+  }
+  return Buffer.from(res.data.content, 'base64').toString('utf8')
+}
+
 /** Create or update a single file. `path` is repo-relative. */
 export async function commitFile(args: {
   path: string

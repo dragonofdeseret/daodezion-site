@@ -1,0 +1,9 @@
+---
+export const prerender = false
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+import LibraryForm from '../../../components/LibraryForm.astro'
+---
+<AdminLayout title="New text">
+  <h1>New library text</h1>
+  <LibraryForm isNew={true} />
+</AdminLayout>

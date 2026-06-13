@@ -1,0 +1,165 @@
+---
+interface Fields {
+  path: string
+  tier: string
+  slug: string
+  title: string
+  note: string
+  href: string
+  epithet: string
+  quoteText: string
+  quoteCite: string
+  why: string
+  echoesJson: string
+}
+interface Props {
+  isNew: boolean
+  fields?: Fields
+}
+const { isNew, fields } = Astro.props
+const f: Fields = fields ?? {
+  path: 'dao',
+  tier: 'core',
+  slug: '',
+  title: '',
+  note: '',
+  href: '',
+  epithet: '',
+  quoteText: '',
+  quoteCite: '',
+  why: '',
+  echoesJson: '[]',
+}
+const PATHS = ['dao', 'de', 'zion']
+---
+<form class="admin-form" id="library-form" data-is-new={String(isNew)} data-orig-slug={f.slug}>
+  <div class="admin-grid-2">
+    <label>Path
+      <select id="lf-path">
+        {PATHS.map((p) => <option value={p} selected={p === f.path}>{p}</option>)}
+      </select>
+    </label>
+    <label>Section
+      <select id="lf-tier">
+        <option value="core" selected={f.tier === 'core'}>Core Texts</option>
+        <option value="further" selected={f.tier === 'further'}>Further Light and Knowledge</option>
+      </select>
+    </label>
+  </div>
+
+  <label>Slug (URL segment)
+    <input id="lf-slug" type="text" value={f.slug} readonly={!isNew} placeholder="auto from title if blank" />
+  </label>
+  <label>Title<input id="lf-title" type="text" value={f.title} required /></label>
+  <label>Edition / note<input id="lf-note" type="text" value={f.note} /></label>
+  <label>Link (href)<input id="lf-href" type="url" value={f.href} placeholder="purchase or read link — optional" /></label>
+  <label>Epithet<input id="lf-epithet" type="text" value={f.epithet} placeholder="short emblem-phrase — optional" /></label>
+
+  <div class="admin-grid-2">
+    <label>Quote<input id="lf-quoteText" type="text" value={f.quoteText} placeholder="a key passage — optional" /></label>
+    <label>Citation<input id="lf-quoteCite" type="text" value={f.quoteCite} placeholder="source — optional" /></label>
+  </div>
+
+  <label>Why it belongs (Markdown)<textarea id="lf-why" rows="6">{f.why}</textarea></label>
+  <details class="admin-preview"><summary>Preview</summary><div class="admin-preview-body" id="lf-why-preview"></div></details>
+
+  <details class="admin-advanced">
+    <summary>Echoes — cross-links (advanced, JSON)</summary>
+    <p class="admin-hint">A JSON array; each item: <code>{'{ "path", "slug", "title", "note" }'}</code>.</p>
+    <textarea id="lf-echoes" rows="8" spellcheck="false">{f.echoesJson}</textarea>
+  </details>
+
+  <div class="admin-form-actions">
+    <button type="submit" class="button" id="lf-save">Save</button>
+    {!isNew && <button type="button" class="button admin-danger" id="lf-delete">Delete</button>}
+    {!isNew && <a class="admin-cancel" href={`/${f.path}/${f.slug}`} target="_blank" rel="noopener noreferrer">View on site ↗</a>}
+    <a class="admin-cancel" href="/admin/library">Cancel</a>
+  </div>
+  <p class="admin-status" id="lf-status" role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  import { marked } from 'marked'
+
+  const $ = (id: string) => document.getElementById(id) as HTMLInputElement
+  const form = document.getElementById('library-form') as HTMLFormElement
+  const statusEl = document.getElementById('lf-status') as HTMLElement
+  const saveBtn = $('lf-save')
+  const isNew = form.dataset.isNew === 'true'
+  const origSlug = form.dataset.origSlug || ''
+  const set = (m: string) => {
+    statusEl.textContent = m
+  }
+  const kebab = (s: string) =>
+    s.toLowerCase().normalize('NFKD').replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-').slice(0, 48).replace(/^-+|-+$/g, '')
+
+  const why = $('lf-why')
+  const preview = document.getElementById('lf-why-preview') as HTMLElement
+  const renderPreview = () => {
+    preview.innerHTML = marked.parse(why.value || '*(nothing yet)*') as string
+  }
+  why.addEventListener('input', renderPreview)
+  renderPreview()
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    saveBtn.disabled = true
+    set('Saving…')
+    let slug = $('lf-slug').value.trim()
+    if (isNew && !slug) slug = kebab($('lf-title').value)
+    const payload = {
+      isNew,
+      originalSlug: origSlug,
+      path: $('lf-path').value,
+      tier: $('lf-tier').value,
+      slug,
+      title: $('lf-title').value,
+      note: $('lf-note').value,
+      href: $('lf-href').value,
+      epithet: $('lf-epithet').value,
+      quoteText: $('lf-quoteText').value,
+      quoteCite: $('lf-quoteCite').value,
+      why: why.value,
+      echoes: $('lf-echoes').value,
+    }
+    try {
+      const res = await fetch('/admin/api/save-library', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Save failed')
+      set('Saved — rebuilds in ~30–60s. Returning to the list…')
+      setTimeout(() => {
+        window.location.href = '/admin/library'
+      }, 1400)
+    } catch (err) {
+      set('Error: ' + (err instanceof Error ? err.message : String(err)))
+      saveBtn.disabled = false
+    }
+  })
+
+  const del = document.getElementById('lf-delete')
+  if (del) {
+    del.addEventListener('click', async () => {
+      if (!window.confirm('Delete this text? This commits a removal to the repo.')) return
+      set('Deleting…')
+      try {
+        const res = await fetch('/admin/api/delete-library', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ slug: origSlug }),
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Delete failed')
+        set('Deleted. Returning…')
+        setTimeout(() => {
+          window.location.href = '/admin/library'
+        }, 1200)
+      } catch (err) {
+        set('Error: ' + (err instanceof Error ? err.message : String(err)))
+      }
+    })
+  }
+</script>

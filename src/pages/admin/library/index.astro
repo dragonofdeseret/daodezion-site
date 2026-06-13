@@ -1,0 +1,37 @@
+---
+export const prerender = false
+import AdminLayout from '../../../layouts/AdminLayout.astro'
+import library from '../../../data/library.json'
+const data: any = library
+const tiers = [
+  { key: 'core', label: 'Core Texts' },
+  { key: 'further', label: 'Further Light and Knowledge' },
+]
+---
+<AdminLayout title="Library">
+  <div class="admin-head-row">
+    <h1>Library</h1>
+    <a class="button" href="/admin/library/new">+ New text</a>
+  </div>
+
+  {data.pathOrder.map((p: string) => (
+    <section class="admin-section">
+      <h2>{data.paths[p].name} · {data.paths[p].subtitle}</h2>
+      {tiers.map((t) => (
+        <>
+          <p class="admin-subhead">{t.label}</p>
+          <ul class="admin-list">
+            {data.paths[p][t.key].map((b: any) => (
+              <li>
+                <a href={`/admin/library/${b.slug}`}>
+                  <span class="admin-list-date">{b.slug}</span>
+                  <span class="admin-list-topic">{b.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      ))}
+    </section>
+  ))}
+</AdminLayout>

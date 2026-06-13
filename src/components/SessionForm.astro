@@ -29,10 +29,11 @@ const f: Fields = fields ?? {
   <label>Attendees<input name="attendees" type="text" value={f.attendees} placeholder="e.g. Founding group — optional" /></label>
   <label>Topic<input name="topic" type="text" value={f.topic} required /></label>
   <label>Filed<input name="filed" type="text" value={f.filed} placeholder="short archival label — optional" /></label>
-  <label>Proceedings<textarea name="proceedings" rows="12" placeholder="Minutes / notes (Markdown supported)">{f.proceedings}</textarea></label>
+  <label>Proceedings<textarea name="proceedings" id="sf-proceedings" rows="12" placeholder="Minutes / notes (Markdown supported)">{f.proceedings}</textarea></label>
+  <details class="admin-preview"><summary>Preview</summary><div class="admin-preview-body" id="sf-preview"></div></details>
 
   <div class="admin-form-actions">
-    <button type="submit" class="button">Save</button>
+    <button type="submit" class="button" id="sf-save">Save</button>
     {!isNew && <button type="button" class="button admin-danger" id="delete-btn">Delete</button>}
     <a class="admin-cancel" href="/admin/sessions">Cancel</a>
   </div>
@@ -40,8 +41,11 @@ const f: Fields = fields ?? {
 </form>
 
 <script>
+  import { marked } from 'marked'
+
   const form = document.getElementById('session-form') as HTMLFormElement
   const statusEl = document.getElementById('form-status') as HTMLElement
+  const saveBtn = document.getElementById('sf-save') as HTMLButtonElement
   const isNew = form.dataset.isNew === 'true'
   const slug = form.dataset.slug || ''
 
@@ -49,8 +53,24 @@ const f: Fields = fields ?? {
     statusEl.textContent = msg
   }
 
+  // New sessions default the date to today.
+  const dateInput = form.querySelector('input[name="date"]') as HTMLInputElement
+  if (isNew && dateInput && !dateInput.value) {
+    dateInput.value = new Date().toISOString().slice(0, 10)
+  }
+
+  // Live Markdown preview of the proceedings.
+  const proceedings = document.getElementById('sf-proceedings') as HTMLTextAreaElement
+  const preview = document.getElementById('sf-preview') as HTMLElement
+  const renderPreview = () => {
+    preview.innerHTML = marked.parse(proceedings.value || '*(nothing yet)*') as string
+  }
+  proceedings.addEventListener('input', renderPreview)
+  renderPreview()
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault()
+    saveBtn.disabled = true
     setStatus('Saving…')
     const fd = new FormData(form)
     const payload = {
@@ -77,6 +97,7 @@ const f: Fields = fields ?? {
       }, 1400)
     } catch (err) {
       setStatus('Error: ' + (err instanceof Error ? err.message : String(err)))
+      saveBtn.disabled = false
     }
   })
 
