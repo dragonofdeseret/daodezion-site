@@ -1,0 +1,91 @@
+---
+export const prerender = false
+import AdminLayout from '../../layouts/AdminLayout.astro'
+---
+<AdminLayout title="Upcoming Session">
+  <h1>Upcoming Session</h1>
+  <p class="admin-status">
+    Controls the “Upcoming” card on the Lodge page. Untick <em>Scheduled</em> to show
+    “No session currently scheduled.” People RSVP through the Google Form you link below;
+    the matching <em>Event key</em> is what tallies their responses.
+  </p>
+  <form class="admin-form" id="upcoming-form">
+    <label class="admin-check">
+      <input type="checkbox" id="u-scheduled" />
+      <span>Scheduled — show this event on the Lodge page</span>
+    </label>
+    <label>Title<input id="u-title" type="text" /></label>
+    <label>Date<input id="u-date" type="date" /></label>
+    <label>Location<input id="u-location" type="text" /></label>
+    <label>Format<input id="u-format" type="text" placeholder="e.g. Open discussion" /></label>
+    <label>Topic<input id="u-topic" type="text" /></label>
+    <label>Suggested reading<input id="u-reading" type="text" /></label>
+    <label>Event key<input id="u-eventKey" type="text" placeholder="ties RSVPs in the sheet to this event" /></label>
+    <label>RSVP form URL<input id="u-rsvpUrl" type="url" placeholder="prefilled Google Form link" /></label>
+    <label>Capacity<input id="u-capacity" type="number" min="1" placeholder="leave blank for no limit" /></label>
+    <div class="admin-form-actions">
+      <button type="submit" class="button">Save</button>
+      <a class="admin-cancel" href="/admin">Cancel</a>
+    </div>
+    <p class="admin-status" id="form-status" role="status" aria-live="polite"></p>
+  </form>
+
+  <script>
+    const $ = (id: string) => document.getElementById(id) as HTMLInputElement
+    const statusEl = document.getElementById('form-status') as HTMLElement
+    const setStatus = (m: string) => {
+      statusEl.textContent = m
+    }
+
+    // Prefill from the live file.
+    ;(async () => {
+      try {
+        const res = await fetch('/upcoming.json', { cache: 'no-store' })
+        if (!res.ok) return
+        const u = await res.json()
+        $('u-scheduled').checked = u.scheduled !== false && u.scheduled !== 'false'
+        $('u-title').value = u.title || ''
+        $('u-date').value = u.date || ''
+        $('u-location').value = u.location || ''
+        $('u-format').value = u.format || ''
+        $('u-topic').value = u.topic || ''
+        $('u-reading').value = u.reading || ''
+        $('u-eventKey').value = u.eventKey || ''
+        $('u-rsvpUrl').value = u.rsvpUrl || ''
+        $('u-capacity').value = u.capacity == null ? '' : String(u.capacity)
+      } catch {
+        /* leave blank */
+      }
+    })()
+
+    document.getElementById('upcoming-form')!.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      setStatus('Saving…')
+      const capRaw = $('u-capacity').value.trim()
+      const payload = {
+        scheduled: $('u-scheduled').checked,
+        title: $('u-title').value,
+        date: $('u-date').value,
+        location: $('u-location').value,
+        format: $('u-format').value,
+        topic: $('u-topic').value,
+        reading: $('u-reading').value,
+        eventKey: $('u-eventKey').value,
+        rsvpUrl: $('u-rsvpUrl').value,
+        capacity: capRaw ? Number(capRaw) : null,
+      }
+      try {
+        const res = await fetch('/admin/api/save-upcoming', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Save failed')
+        setStatus('Saved — the Lodge page updates after the rebuild (~30–60s).')
+      } catch (err) {
+        setStatus('Error: ' + (err instanceof Error ? err.message : String(err)))
+      }
+    })
+  </script>
+</AdminLayout>

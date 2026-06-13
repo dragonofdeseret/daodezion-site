@@ -125,3 +125,16 @@
   text-transform: uppercase;
   color: var(--gold-dim);
 }
+
+/* horizontal checkbox row (overrides the stacked label layout) */
+.admin-check {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+.admin-check input { width: auto; }

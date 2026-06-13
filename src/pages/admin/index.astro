@@ -14,5 +14,11 @@ const sessions = await getCollection('sessions')
         <span>{sessions.length} record{sessions.length === 1 ? '' : 's'} · add &amp; edit proceedings</span>
       </a>
     </li>
+    <li>
+      <a href="/admin/upcoming">
+        <strong>Upcoming Session</strong>
+        <span>Schedule (or clear) the event &amp; RSVP shown on the Lodge page</span>
+      </a>
+    </li>
   </ul>
 </AdminLayout>

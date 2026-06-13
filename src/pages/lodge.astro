@@ -37,6 +37,8 @@ for (const year of years) {
       dateLong: formatDate(entry.data.date),
     })
   }
+  // Numbered chronologically above; display most-recent first.
+  rendered.reverse()
   yearGroups.push({ year, rendered })
 }
 
