@@ -18,4 +18,12 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'auto',
   },
+  // Astro's default checkOrigin:true rejects legitimate same-site POSTs on
+  // Vercel preview URLs because of how their edge forwards the Origin header
+  // ("Cross-site POST form submissions are forbidden"). Our only POST routes
+  // are the /admin endpoints, already gated by the password + signed cookie,
+  // so disabling this narrow check is safe.
+  security: {
+    checkOrigin: false,
+  },
 })
