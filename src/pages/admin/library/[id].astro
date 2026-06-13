@@ -7,16 +7,15 @@ import library from '../../../data/library.json'
 const data: any = library
 const { id } = Astro.params
 
+const allTexts: { path: string; slug: string; title: string }[] = []
 let found: { path: string; tier: string; book: any } | null = null
 for (const p of data.pathOrder) {
   for (const tier of ['core', 'further']) {
-    const book = data.paths[p][tier].find((x: any) => x.slug === id)
-    if (book) {
-      found = { path: p, tier, book }
-      break
+    for (const b of data.paths[p][tier]) {
+      allTexts.push({ path: p, slug: b.slug, title: b.title })
+      if (b.slug === id && !found) found = { path: p, tier, book: b }
     }
   }
-  if (found) break
 }
 if (!found) return Astro.redirect('/admin/library')
 
@@ -32,10 +31,10 @@ const fields = {
   quoteText: b.quote?.text || '',
   quoteCite: b.quote?.cite || '',
   why: b.why || '',
-  echoesJson: JSON.stringify(b.echoes ?? [], null, 2),
+  echoes: b.echoes ?? [],
 }
 ---
 <AdminLayout title={`Edit · ${b.title}`}>
   <h1>Edit text</h1>
-  <LibraryForm isNew={false} fields={fields} />
+  <LibraryForm isNew={false} fields={fields} allTexts={allTexts} />
 </AdminLayout>

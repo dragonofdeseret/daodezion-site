@@ -16,7 +16,10 @@ const tiers = [
 
   {data.pathOrder.map((p: string) => (
     <section class="admin-section">
-      <h2>{data.paths[p].name} · {data.paths[p].subtitle}</h2>
+      <div class="admin-head-row">
+        <h2>{data.paths[p].name} · {data.paths[p].subtitle}</h2>
+        <a class="admin-cancel" href={`/admin/library/path/${p}`}>Edit intro ↗</a>
+      </div>
       {tiers.map((t) => (
         <>
           <p class="admin-subhead">{t.label}</p>

@@ -1,4 +1,10 @@
 ---
+interface Echo {
+  path: string
+  slug: string
+  title: string
+  note: string
+}
 interface Fields {
   path: string
   tier: string
@@ -10,13 +16,19 @@ interface Fields {
   quoteText: string
   quoteCite: string
   why: string
-  echoesJson: string
+  echoes: Echo[]
+}
+interface TextRef {
+  path: string
+  slug: string
+  title: string
 }
 interface Props {
   isNew: boolean
   fields?: Fields
+  allTexts: TextRef[]
 }
-const { isNew, fields } = Astro.props
+const { isNew, fields, allTexts } = Astro.props
 const f: Fields = fields ?? {
   path: 'dao',
   tier: 'core',
@@ -28,7 +40,7 @@ const f: Fields = fields ?? {
   quoteText: '',
   quoteCite: '',
   why: '',
-  echoesJson: '[]',
+  echoes: [],
 }
 const PATHS = ['dao', 'de', 'zion']
 ---
@@ -63,11 +75,38 @@ const PATHS = ['dao', 'de', 'zion']
   <label>Why it belongs (Markdown)<textarea id="lf-why" rows="6">{f.why}</textarea></label>
   <details class="admin-preview"><summary>Preview</summary><div class="admin-preview-body" id="lf-why-preview"></div></details>
 
-  <details class="admin-advanced">
-    <summary>Echoes — cross-links (advanced, JSON)</summary>
-    <p class="admin-hint">A JSON array; each item: <code>{'{ "path", "slug", "title", "note" }'}</code>.</p>
-    <textarea id="lf-echoes" rows="8" spellcheck="false">{f.echoesJson}</textarea>
-  </details>
+  <fieldset class="admin-echoes">
+    <legend>Echoes — cross-links to other texts</legend>
+    <div id="lf-echoes-rows">
+      {f.echoes.map((e) => (
+        <div class="echo-row">
+          <select class="echo-target">
+            <option value="">— choose a text —</option>
+            {allTexts.map((t) => (
+              <option value={`${t.path}|${t.slug}`} data-title={t.title} selected={t.path === e.path && t.slug === e.slug}>
+                {t.path} / {t.title}
+              </option>
+            ))}
+          </select>
+          <input class="echo-note" type="text" value={e.note} placeholder="the resonance — how they rhyme" />
+          <button type="button" class="echo-remove" aria-label="Remove echo">×</button>
+        </div>
+      ))}
+    </div>
+    <button type="button" class="button admin-add-echo" id="lf-add-echo">+ Add echo</button>
+    <template id="echo-row-template">
+      <div class="echo-row">
+        <select class="echo-target">
+          <option value="">— choose a text —</option>
+          {allTexts.map((t) => (
+            <option value={`${t.path}|${t.slug}`} data-title={t.title}>{t.path} / {t.title}</option>
+          ))}
+        </select>
+        <input class="echo-note" type="text" placeholder="the resonance — how they rhyme" />
+        <button type="button" class="echo-remove" aria-label="Remove echo">×</button>
+      </div>
+    </template>
+  </fieldset>
 
   <div class="admin-form-actions">
     <button type="submit" class="button" id="lf-save">Save</button>
@@ -93,6 +132,7 @@ const PATHS = ['dao', 'de', 'zion']
   const kebab = (s: string) =>
     s.toLowerCase().normalize('NFKD').replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-').slice(0, 48).replace(/^-+|-+$/g, '')
 
+  // Markdown preview
   const why = $('lf-why')
   const preview = document.getElementById('lf-why-preview') as HTMLElement
   const renderPreview = () => {
@@ -100,6 +140,29 @@ const PATHS = ['dao', 'de', 'zion']
   }
   why.addEventListener('input', renderPreview)
   renderPreview()
+
+  // Echoes — add/remove rows
+  const rows = document.getElementById('lf-echoes-rows') as HTMLElement
+  const template = document.getElementById('echo-row-template') as HTMLTemplateElement
+  document.getElementById('lf-add-echo')!.addEventListener('click', () => {
+    rows.appendChild(template.content.cloneNode(true))
+  })
+  rows.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.echo-remove')
+    if (btn) btn.closest('.echo-row')?.remove()
+  })
+  const gatherEchoes = () => {
+    const out: { path: string; slug: string; title: string; note: string }[] = []
+    rows.querySelectorAll('.echo-row').forEach((row) => {
+      const sel = row.querySelector('.echo-target') as HTMLSelectElement
+      const note = (row.querySelector('.echo-note') as HTMLInputElement).value.trim()
+      if (!sel.value) return
+      const [path, slug] = sel.value.split('|')
+      const title = sel.options[sel.selectedIndex]?.dataset.title || ''
+      out.push({ path, slug, title, note })
+    })
+    return out
+  }
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault()
@@ -120,7 +183,7 @@ const PATHS = ['dao', 'de', 'zion']
       quoteText: $('lf-quoteText').value,
       quoteCite: $('lf-quoteCite').value,
       why: why.value,
-      echoes: $('lf-echoes').value,
+      echoes: JSON.stringify(gatherEchoes()),
     }
     try {
       const res = await fetch('/admin/api/save-library', {

@@ -2,8 +2,17 @@
 export const prerender = false
 import AdminLayout from '../../../layouts/AdminLayout.astro'
 import LibraryForm from '../../../components/LibraryForm.astro'
+import library from '../../../data/library.json'
+
+const data: any = library
+const allTexts: { path: string; slug: string; title: string }[] = []
+for (const p of data.pathOrder) {
+  for (const tier of ['core', 'further']) {
+    for (const b of data.paths[p][tier]) allTexts.push({ path: p, slug: b.slug, title: b.title })
+  }
+}
 ---
 <AdminLayout title="New text">
   <h1>New library text</h1>
-  <LibraryForm isNew={true} />
+  <LibraryForm isNew={true} allTexts={allTexts} />
 </AdminLayout>

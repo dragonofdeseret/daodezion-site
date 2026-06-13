@@ -1,0 +1,72 @@
+---
+export const prerender = false
+import AdminLayout from '../../../../layouts/AdminLayout.astro'
+import library from '../../../../data/library.json'
+
+const data: any = library
+const { path } = Astro.params
+const meta = data.paths[path as string]
+if (!meta) return Astro.redirect('/admin/library')
+---
+<AdminLayout title={`Intro · ${path}`}>
+  <h1>Path intro — {meta.name}</h1>
+  <p class="admin-status">Edits the headings and prose for the <strong>{path}</strong> path (Library hub, the path page, and the leaf framing).</p>
+  <form class="admin-form" id="path-form" data-path={path}>
+    <div class="admin-grid-2">
+      <label>Name<input id="pf-name" type="text" value={meta.name} /></label>
+      <label>Subtitle<input id="pf-subtitle" type="text" value={meta.subtitle} /></label>
+    </div>
+    <div class="admin-grid-2">
+      <label>Glyph<input id="pf-glyph" type="text" value={meta.glyph} /></label>
+      <label>Sancai line<input id="pf-sancai" type="text" value={meta.sancai} /></label>
+    </div>
+    <label>Triad blurb (Library card)<textarea id="pf-triadBlurb" rows="2">{meta.triadBlurb}</textarea></label>
+    <label>Lede (hero)<textarea id="pf-lede" rows="3">{meta.lede}</textarea></label>
+    <label>Statement<textarea id="pf-statement" rows="3">{meta.statement}</textarea></label>
+    <label>Why these texts belong here<textarea id="pf-why" rows="3">{meta.why}</textarea></label>
+    <div class="admin-form-actions">
+      <button type="submit" class="button" id="pf-save">Save</button>
+      <a class="admin-cancel" href={`/${path}`} target="_blank" rel="noopener noreferrer">View on site ↗</a>
+      <a class="admin-cancel" href="/admin/library">Cancel</a>
+    </div>
+    <p class="admin-status" id="pf-status" role="status" aria-live="polite"></p>
+  </form>
+
+  <script>
+    const byId = (id) => document.getElementById(id)
+    const form = byId('path-form')
+    const statusEl = byId('pf-status')
+    const saveBtn = byId('pf-save')
+    const set = (m) => { statusEl.textContent = m }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      saveBtn.disabled = true
+      set('Saving…')
+      const payload = {
+        path: form.dataset.path,
+        name: byId('pf-name').value,
+        subtitle: byId('pf-subtitle').value,
+        glyph: byId('pf-glyph').value,
+        sancai: byId('pf-sancai').value,
+        triadBlurb: byId('pf-triadBlurb').value,
+        lede: byId('pf-lede').value,
+        statement: byId('pf-statement').value,
+        why: byId('pf-why').value,
+      }
+      try {
+        const res = await fetch('/admin/api/save-path', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Save failed')
+        set('Saved — the site rebuilds in ~30–60s.')
+      } catch (err) {
+        set('Error: ' + (err instanceof Error ? err.message : String(err)))
+        saveBtn.disabled = false
+      }
+    })
+  </script>
+</AdminLayout>

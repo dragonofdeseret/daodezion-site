@@ -190,3 +190,49 @@
 .admin-hint code { font-size: 0.8rem; }
 
 .button:disabled { opacity: 0.55; pointer-events: none; }
+
+/* Echoes row editor */
+.admin-echoes {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.8rem;
+  display: grid;
+  gap: 0.6rem;
+}
+.admin-echoes legend {
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--gold-dim);
+  padding: 0 0.4rem;
+}
+.echo-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+.echo-row select, .echo-row input {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: rgba(255, 252, 246, 0.7);
+  border: 1px solid rgba(90, 41, 23, 0.3);
+  border-radius: 2px;
+  padding: 0.45rem 0.5rem;
+}
+.echo-remove {
+  border: 1px solid rgba(163, 49, 29, 0.4);
+  background: none;
+  color: var(--red-bright);
+  border-radius: 2px;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  font-size: 1.1rem;
+}
+.echo-remove:hover { background: rgba(163, 49, 29, 0.1); }
+.admin-add-echo { justify-self: start; font-size: 0.74rem; padding: 0.4rem 0.9rem; }
+@media (max-width: 560px) { .echo-row { grid-template-columns: 1fr; } }
