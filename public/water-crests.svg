@@ -1,0 +1,26 @@
+<!--
+  Water-crest (seigaiha 青海波, "blue sea waves") texture tile — daodezion's
+  member of the site family (cf. dragonofdeseret's fish-scales, Valence's Greek
+  meander). Tiles seamlessly at 24×24.
+
+  Each crest is three nested arcs rising upward (∩) — a layered wave. The bottom
+  row holds one full crest centered at x=12; the upper row holds two half-crests
+  at the tile edges whose other halves live in the horizontally-adjacent tiles —
+  the offset-row seigaiha rhythm. Muted gold hairline so it reads as candle-lit
+  water. Tune stroke colour / opacity here; the site references /water-crests.svg.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g fill="none" stroke="#b3852f" stroke-width="0.7" stroke-opacity="0.22" stroke-linecap="round">
+    <!-- bottom-row crest, centered x=12, rising up -->
+    <path d="M0,24 Q12,0 24,24" />
+    <path d="M4,24 Q12,8 20,24" />
+    <path d="M8,24 Q12,15 16,24" />
+    <!-- upper-row half-crests at the edges (other halves supplied by neighbors) -->
+    <path d="M-12,12 Q0,-12 12,12" />
+    <path d="M-8,12 Q0,-4 8,12" />
+    <path d="M-4,12 Q0,3 4,12" />
+    <path d="M12,12 Q24,-12 36,12" />
+    <path d="M16,12 Q24,-4 32,12" />
+    <path d="M20,12 Q24,3 28,12" />
+  </g>
+</svg>

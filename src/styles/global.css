@@ -62,18 +62,27 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  /* dark scriptorium — candle-glow over near-black, a desk in shadow */
-  background:
+  /* dark scriptorium — candle-glow over near-black, a desk in shadow,
+     wallpapered with faint seigaiha water-crests (the site-family texture;
+     cf. dragonofdeseret fish-scales, Valence Greek meander) */
+  background-color: #0a0605;
+  background-image:
+    url("/water-crests.svg"),
     radial-gradient(ellipse 70% 55% at 50% -8%, rgba(184, 138, 54, 0.20), transparent 60%),
     radial-gradient(circle at 50% 24%, rgba(120, 36, 23, 0.13), transparent 60%),
     radial-gradient(ellipse at 50% 124%, rgba(0, 0, 0, 0.55), transparent 62%),
     linear-gradient(180deg, #0f0a08 0%, #0a0605 100%);
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-size: 42px 42px, auto, auto, auto, auto;
+  background-position: center top, center, center, center, center;
   background-attachment: fixed;
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 1.125rem;
   line-height: 1.72;
   font-feature-settings: "liga", "onum", "kern";
+  font-optical-sizing: auto;
+  hanging-punctuation: first allow-end last;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   position: relative;
