@@ -236,3 +236,42 @@
 .echo-remove:hover { background: rgba(163, 49, 29, 0.1); }
 .admin-add-echo { justify-self: start; font-size: 0.74rem; padding: 0.4rem 0.9rem; }
 @media (max-width: 560px) { .echo-row { grid-template-columns: 1fr; } }
+
+/* Library list rows with reorder controls */
+.admin-rows { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+.admin-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: rgba(247, 238, 223, 0.5);
+  transition: border-color var(--transition), background var(--transition);
+}
+.admin-row:hover { border-color: var(--red-bright); background: rgba(247, 238, 223, 0.85); }
+.admin-row-link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.8rem 1rem;
+}
+.admin-row-link .admin-list-topic { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-reorder { display: flex; flex-direction: column; justify-content: center; gap: 0.2rem; padding-right: 0.5rem; }
+.reorder-btn {
+  border: 1px solid var(--line);
+  background: rgba(255, 252, 246, 0.5);
+  color: var(--ink-soft);
+  border-radius: 2px;
+  width: 1.8rem;
+  height: 1.1rem;
+  font-size: 0.6rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reorder-btn:hover:not(:disabled) { border-color: var(--red-bright); color: var(--red-bright); }
+.reorder-btn:disabled { opacity: 0.3; cursor: default; }

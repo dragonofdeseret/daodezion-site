@@ -13,6 +13,7 @@ const tiers = [
     <h1>Library</h1>
     <a class="button" href="/admin/library/new">+ New text</a>
   </div>
+  <p class="admin-status">Use ▲▼ to reorder a text within its section (saves &amp; rebuilds each move). Click a title to edit it.</p>
 
   {data.pathOrder.map((p: string) => (
     <section class="admin-section">
@@ -23,13 +24,17 @@ const tiers = [
       {tiers.map((t) => (
         <>
           <p class="admin-subhead">{t.label}</p>
-          <ul class="admin-list">
+          <ul class="admin-rows" data-reorder-list>
             {data.paths[p][t.key].map((b: any) => (
-              <li>
-                <a href={`/admin/library/${b.slug}`}>
+              <li class="admin-row" data-slug={b.slug}>
+                <a class="admin-row-link" href={`/admin/library/${b.slug}`}>
                   <span class="admin-list-date">{b.slug}</span>
                   <span class="admin-list-topic">{b.title}</span>
                 </a>
+                <span class="admin-reorder">
+                  <button type="button" class="reorder-btn" data-dir="up" data-slug={b.slug} aria-label="Move up">▲</button>
+                  <button type="button" class="reorder-btn" data-dir="down" data-slug={b.slug} aria-label="Move down">▼</button>
+                </span>
               </li>
             ))}
           </ul>
@@ -37,4 +42,51 @@ const tiers = [
       ))}
     </section>
   ))}
+
+  <script>
+    const setEdges = (ul: Element) => {
+      const rows = Array.from(ul.querySelectorAll('.admin-row'))
+      rows.forEach((row, i) => {
+        const up = row.querySelector('[data-dir="up"]') as HTMLButtonElement | null
+        const down = row.querySelector('[data-dir="down"]') as HTMLButtonElement | null
+        if (up) up.disabled = i === 0
+        if (down) down.disabled = i === rows.length - 1
+      })
+    }
+    const lists = document.querySelectorAll('[data-reorder-list]')
+    lists.forEach(setEdges)
+
+    let busy = false
+    document.addEventListener('click', async (event) => {
+      const btn = (event.target as HTMLElement).closest('.reorder-btn') as HTMLButtonElement | null
+      if (!btn || busy || btn.disabled) return
+      busy = true
+      document.querySelectorAll('.reorder-btn').forEach((b) => ((b as HTMLButtonElement).disabled = true))
+      const slug = btn.dataset.slug
+      const dir = btn.dataset.dir
+      try {
+        const res = await fetch('/admin/api/reorder-library', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ slug, direction: dir }),
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Reorder failed')
+        if (data.moved) {
+          const row = btn.closest('.admin-row') as HTMLElement
+          const ul = row.parentElement as HTMLElement
+          if (dir === 'up' && row.previousElementSibling) {
+            ul.insertBefore(row, row.previousElementSibling)
+          } else if (dir === 'down' && row.nextElementSibling) {
+            ul.insertBefore(row.nextElementSibling, row)
+          }
+        }
+      } catch (err) {
+        window.alert('Reorder error: ' + (err instanceof Error ? err.message : String(err)))
+      } finally {
+        busy = false
+        lists.forEach(setEdges)
+      }
+    })
+  </script>
 </AdminLayout>
