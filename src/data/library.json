@@ -85,18 +85,18 @@
           "title": "The Sermon on the Mount",
           "note": "Matthew 5–7; and its Book of Mormon parallel, 3 Nephi 12–14.",
           "href": "https://www.churchofjesuschrist.org/study/scriptures/bofm/3-ne/12",
+          "why": "The Way in the Latter-day Saint and Christian key: a discipline of non-grasping trust—provision without anxiety, righteousness without force.",
           "epithet": "Consider the Lilies",
           "quote": {
             "text": "Consider the lilies of the field, how they grow; they toil not, neither do they spin.",
             "cite": "Matthew 6:28"
           },
-          "why": "The Way in the Latter-day Saint and Christian key: a discipline of non-grasping trust—provision without anxiety, righteousness without force.",
           "echoes": [
             {
               "path": "dao",
               "slug": "daodejing",
               "title": "Daodejing",
-              "note": "Wu wei: to act without forcing, as the lilies neither toil nor spin."
+              "note": "Wuwei: to act without coercion, as the lilies neither toil nor spin."
             },
             {
               "path": "zion",
