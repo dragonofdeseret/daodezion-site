@@ -1,5 +1,5 @@
 /*
-  LODGE OF ZION — UPCOMING SESSION + RSVP
+  LODGE OF DESERET — UPCOMING SESSION + RSVP
   ---------------------------------------
   The meeting register (archive of past proceedings) is rendered server-side on
   the Lodge page from the `sessions` content collection.

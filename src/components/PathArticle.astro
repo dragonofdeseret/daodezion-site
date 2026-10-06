@@ -1,5 +1,5 @@
 ---
-// Renders a single path page (Dao / De / Zion) from a path object in
+// Renders a single path page (Dao / De / Deseret) from a path object in
 // src/data/paths.js. Used by the three path pages so they stay in sync.
 interface Book {
   slug: string
@@ -27,7 +27,7 @@ const { path } = Astro.props
 ---
 <section class="hero compact ink-hero">
   <span class="title-glyph" aria-hidden="true">{path.glyph}</span>
-  <p class="eyebrow">Institute library</p>
+  <p class="eyebrow">Foundation library</p>
   <h1>{path.name}</h1>
   <p class="path-subtitle large">{path.subtitle}</p>
   <p class="sancai">{path.sancai}</p>

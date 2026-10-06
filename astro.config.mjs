@@ -15,6 +15,10 @@ export default defineConfig({
   output: 'static',
   adapter: vercel(),
   integrations: [sitemap()],
+  // The third path was renamed Zion → Deseret; keep old links working.
+  redirects: {
+    '/zion': '/deseret',
+  },
   build: {
     inlineStylesheets: 'auto',
   },

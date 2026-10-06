@@ -2,7 +2,7 @@
   "pathOrder": [
     "dao",
     "de",
-    "zion"
+    "deseret"
   ],
   "paths": {
     "dao": {
@@ -29,7 +29,7 @@
           "why": "The root text of the Way—power through yielding, action through non-coercion. It teaches how to move with the grain of things rather than force the world into a shape it will not keep.",
           "echoes": [
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "zhuangzi",
               "title": "The Complete Zhuangzi",
               "note": "The same Way at play—the holy fool who will not be carved into a useful shape."
@@ -73,7 +73,7 @@
               "note": "The koan as practice that drops the seeker rather than informing him."
             },
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "analects",
               "title": "The Analects of Confucius",
               "note": "The Way embodied in conduct and rite—the act itself as the teaching."
@@ -99,7 +99,7 @@
               "note": "Wuwei: to act without coercion, as the lilies neither toil nor spin."
             },
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "book-of-mormon",
               "title": "The Book of Mormon",
               "note": "The same trust made covenant: provision and deliverance through the Lord."
@@ -193,7 +193,7 @@
               "note": "The Way instructed, here overheard in story."
             },
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "zhuangzi",
               "title": "The Complete Zhuangzi",
               "note": "Kindred Taoist tale-telling—the wild ease and the laughing sage."
@@ -240,7 +240,7 @@
               "note": "No-self asserted in the sutras, here simply seen."
             },
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "zhuangzi",
               "title": "The Complete Zhuangzi",
               "note": "'I have lost myself,' says the sage—the dissolving of the separate self."
@@ -300,7 +300,7 @@
               "note": "Wisdom carried in parable and story."
             },
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "sri-chaitanya",
               "title": "Sri Chaitanya and His Associates",
               "note": "Love made the discipline and the way."
@@ -386,7 +386,7 @@
           "why": "Bly reads a single fairy tale as the map of a man's inner initiation—symbol and story as instruments of first-person transformation.",
           "echoes": [
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "jesus-the-christ",
               "title": "Jesus the Christ",
               "note": "Descent, wound, and return—the redemptive pattern."
@@ -401,15 +401,15 @@
         }
       ]
     },
-    "zion": {
-      "slug": "zion",
-      "name": "Zion",
+    "deseret": {
+      "slug": "deseret",
+      "name": "Deseret",
       "subtitle": "The Order",
       "glyph": "地",
       "sancai": "Earth — the order built among a people",
       "triadBlurb": "Texts of covenant, law, communal memory, ritual form, and the difficult labor of making a people.",
       "lede": "This path concerns durable form: covenant, law, ritual, memory, and the difficult labor by which persons and peoples are gathered into a life that can be held, transmitted, and judged.",
-      "statement": "Many resist order after experiencing its anxious distortions. Yet no life remains human for long without form, memory, and shared obligation. Zion names the problem of order recovered rather than merely obeyed.",
+      "statement": "Many resist order after experiencing its anxious distortions. Yet no life remains human for long without form, memory, and shared obligation. Deseret—the honeybee, the hive that builds in common—names the problem of order recovered rather than merely obeyed.",
       "why": "These texts belong here because they are preoccupied with communal life: memory, law, ritual, transmission, hierarchy, covenant, and the formation of a people. They preserve the question of what order can be when it is not reduced to mere control.",
       "core": [
         {
@@ -425,7 +425,7 @@
           "why": "A people's covenant record—rise, forgetting, and return. Zion as a thing to be built, lost, and rebuilt across generations.",
           "echoes": [
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "torah",
               "title": "The Torah",
               "note": "Another covenant record of a people bound by promise."
@@ -437,7 +437,7 @@
               "note": "The same Sermon, given again at Bountiful."
             },
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "pearl-of-great-price",
               "title": "Pearl of Great Price",
               "note": "Enoch's Zion—the archetype of the order made whole."
@@ -457,13 +457,13 @@
           "why": "The founding law and narrative of a covenant people—how a wandering company becomes an order bound by memory and obligation.",
           "echoes": [
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "book-of-mormon",
               "title": "The Book of Mormon",
               "note": "A second witness of covenant and a people."
             },
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "analects",
               "title": "The Analects of Confucius",
               "note": "Law and rite as the form that holds a people together."
@@ -489,7 +489,7 @@
           "why": "Order as cultivated relation: ritual, role, and reverence as the forms through which a humane society holds together.",
           "echoes": [
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "torah",
               "title": "The Torah",
               "note": "Law and ritual as the ordering of a people."
@@ -501,7 +501,7 @@
               "note": "The rite itself as the teaching—the act before the doctrine."
             },
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "book-of-mormon",
               "title": "The Book of Mormon",
               "note": "A people ordered by covenant and relation."
@@ -518,7 +518,7 @@
             "text": "Now I do not know whether I was a man dreaming I was a butterfly, or am now a butterfly dreaming I am a man.",
             "cite": "Zhuangzi, ch. 2 (Watson)"
           },
-          "why": "Why on the path of Order? Because every living order needs its holy fool. Zhuangzi is the wild counter-voice within Zion—the laughter that keeps law from hardening into mere rule, and reminds the city that its forms serve life, not the reverse.",
+          "why": "Why on the path of Order? Because every living order needs its holy fool. Zhuangzi is the wild counter-voice within Deseret—the laughter that keeps law from hardening into mere rule, and reminds the city that its forms serve life, not the reverse.",
           "echoes": [
             {
               "path": "dao",
@@ -555,13 +555,13 @@
           "why": "Latter-day scripture of cosmogony and covenant—Enoch's Zion, the city taken up, as the archetype of an order made whole.",
           "echoes": [
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "book-of-mormon",
               "title": "The Book of Mormon",
               "note": "The covenant continued; Zion built and gathered."
             },
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "torah",
               "title": "The Torah",
               "note": "Moses and the creation—the cosmogony of a people."
@@ -583,7 +583,7 @@
           "why": "Talmage’s measured account of the life that, for the Latter-day Saint, founds the new covenant and the order built upon it.",
           "echoes": [
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "book-of-mormon",
               "title": "The Book of Mormon",
               "note": "The same Christ, testified by another witness."
@@ -611,7 +611,7 @@
           "why": "A devotional order formed around shared ecstatic practice—community as the vessel and discipline of love.",
           "echoes": [
             {
-              "path": "zion",
+              "path": "deseret",
               "slug": "jesus-the-christ",
               "title": "Jesus the Christ",
               "note": "Devotion gathered around a divine person."

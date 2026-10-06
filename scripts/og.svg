@@ -32,8 +32,8 @@
     <circle cx="100" cy="48" r="2.6" fill="#b3852f" stroke="none" />
   </g>
 
-  <text x="600" y="380" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="62" letter-spacing="9" fill="#dcb45f">DAO DE ZION</text>
-  <text x="600" y="442" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" letter-spacing="14" fill="#c49a52">INSTITUTE</text>
+  <text x="600" y="380" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="62" letter-spacing="9" fill="#dcb45f">DAO DE DESERET</text>
+  <text x="600" y="442" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" letter-spacing="14" fill="#c49a52">FOUNDATION</text>
 
   <line x1="470" y1="486" x2="730" y2="486" stroke="#b3852f" stroke-opacity="0.5" stroke-width="1" />
 

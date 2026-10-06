@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import { getCollection, render } from 'astro:content'
 
 // Build the meeting register from the `sessions` collection. Records are
-// numbered LOZ-{year}-{NNN} within each year (ascending by date); years are
+// numbered LOD-{year}-{NNN} within each year (ascending by date); years are
 // shown most-recent first.
 const all = await getCollection('sessions')
 const sorted = [...all].sort((a, b) => a.data.date.localeCompare(b.data.date))
@@ -33,7 +33,7 @@ for (const year of years) {
       entry,
       Content,
       hasBody: Boolean(entry.body && entry.body.trim()),
-      recordNo: `LOZ-${year}-${pad3(i + 1)}`,
+      recordNo: `LOD-${year}-${pad3(i + 1)}`,
       dateLong: formatDate(entry.data.date),
     })
   }
@@ -46,15 +46,15 @@ const totalRecords = sorted.length
 const currentYear = years[0] ?? new Date().getFullYear()
 ---
 <BaseLayout
-  title="Lodge of Zion"
-  description="The Lodge of Zion: the gathering body of Dao De Zion Institute. Sessions, announcements, and archived proceedings, convened by its founding chapter, The Holy Smoke."
+  title="Lodge of Deseret"
+  description="The Lodge of Deseret: the gathering body of the Dao De Deseret Foundation. Sessions, announcements, and archived proceedings, convened by its founding chapter, The Holy Smoke."
   active="lodge"
 >
   <section class="hero compact ink-hero">
     <p class="eyebrow">The gathering body · sessions · proceedings</p>
-    <h1>Lodge of Zion</h1>
+    <h1>Lodge of Deseret</h1>
     <p class="lede lede-strong">
-      The Lodge is where the Institute becomes a people rather than a syllabus—a recurring
+      The Lodge is where the Foundation becomes a people rather than a syllabus—a recurring
       assembly for study, argument, and the slow accumulation of a shared mind. What is
       said is kept; the register is the Lodge's memory of itself.
     </p>
@@ -75,7 +75,7 @@ const currentYear = years[0] ?? new Date().getFullYear()
       Before the Lodge had a name, there was a circle of friends who simply gathered—to
       read, to argue, to laugh, to keep faith with one another and with the questions. They
       called themselves <strong>The Holy Smoke</strong>, and they remain the hearth at which
-      the Lodge of Zion convenes: its first chapter, and the living proof that this is
+      the Lodge of Deseret convenes: its first chapter, and the living proof that this is
       fellowship before it is an institution.
     </p>
   </section>
@@ -87,7 +87,7 @@ const currentYear = years[0] ?? new Date().getFullYear()
       <p class="eyebrow">About the Lodge</p>
       <div class="archive-notes archive-notes-recorded">
         <p>
-          The Lodge of Zion is the gathering body of Dao De Zion Institute — its recurring
+          The Lodge of Deseret is the gathering body of the Dao De Deseret Foundation — its recurring
           forum for study sessions, round-tables, and recorded proceedings. It is not a
           sequence of isolated events, but an accumulating conversation in which each
           meeting inherits the weight and direction of those that came before it.
@@ -112,7 +112,7 @@ const currentYear = years[0] ?? new Date().getFullYear()
     <div class="register-index card ink-card">
       <p class="eyebrow">Index</p>
       <div class="register-index-grid">
-        <p><strong>Series</strong><span>Lodge of Zion Proceedings</span></p>
+        <p><strong>Series</strong><span>Lodge of Deseret Proceedings</span></p>
         <p><strong>Current year</strong><span>{currentYear}</span></p>
         <p><strong>Records entered</strong><span>{totalRecords}</span></p>
         <p><strong>Status</strong><span>Active</span></p>

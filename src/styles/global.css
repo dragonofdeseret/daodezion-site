@@ -1,5 +1,5 @@
 /* =========================================
-   DAO DE ZION INSTITUTE
+   DAO DE DESERET FOUNDATION
    FULL SITE STYLESHEET
    ANALECTS / LACQUER / VERMILION VERSION
 ========================================= */
@@ -1137,6 +1137,23 @@ h3 {
   color: rgba(225, 207, 179, 0.5);
   font-size: 0.86rem;
   letter-spacing: 0.04em;
+}
+
+.site-footer .footer-sister {
+  margin-top: -0.4rem;
+  font-size: 0.8rem;
+  color: rgba(225, 207, 179, 0.5);
+}
+
+.site-footer .footer-sister a {
+  color: rgba(225, 207, 179, 0.75);
+  text-decoration: underline;
+  text-decoration-color: rgba(179, 133, 47, 0.4);
+  text-underline-offset: 0.18em;
+}
+
+.site-footer .footer-sister a:hover {
+  color: var(--gold);
 }
 
 

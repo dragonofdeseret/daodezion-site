@@ -24,7 +24,7 @@ interface Props {
   /** Top-level nav highlight. */
   active?: 'home' | 'library' | 'lodge'
   /** Active Library sub-path. */
-  sub?: 'dao' | 'de' | 'zion'
+  sub?: 'dao' | 'de' | 'deseret'
   /** Extra class on <body> (e.g. 'library-active', 'drako'). */
   bodyClass?: string
   /** Class on the <main> wrapper. Ignored when chrome is false. */
@@ -33,13 +33,13 @@ interface Props {
   chrome?: boolean
   /** Emit <meta name="robots" content="noindex,nofollow">. */
   noindex?: boolean
-  /** Append " — Dao De Zion Institute" to the title. */
+  /** Append " — Dao De Deseret Foundation" to the title. */
   appendSiteName?: boolean
 }
 
 const {
   title,
-  description = 'Dao De Zion Institute — an umbrella project for comparative theology, philosophical study, and disciplined religious reflection, organized around Dao, De, and Zion.',
+  description = 'Dao De Deseret Foundation — a foundation for comparative theology, philosophical study, and disciplined religious reflection, organized around Dao, De, and Deseret.',
   ogImage = '/og.png',
   active,
   sub,
@@ -50,7 +50,7 @@ const {
   appendSiteName = true,
 } = Astro.props
 
-const fullTitle = appendSiteName ? `${title} — Dao De Zion Institute` : title
+const fullTitle = appendSiteName ? `${title} — Dao De Deseret Foundation` : title
 const canonical = new URL(Astro.url.pathname, Astro.site).toString()
 const ogImageUrl = new URL(ogImage, Astro.site).toString()
 ---
